@@ -28,6 +28,7 @@ import java.net.URI;
 import java.security.Principal;
 import java.util.List;
 import java.util.Map;
+import javax.servlet.http.HttpSession;
 
 /**
  * The handshake request represents the web socket defined Http request that for the opening
@@ -42,5 +43,12 @@ public interface HandshakeRequest {
     public Principal getUserPrincipal();
     /** Return the request URI of the handshake request.*/
     public URI getRequestURI();
+    /** Checks whether the current user is in the given role. */
+    public boolean isUserInRole(String role);
+    /** Return a reference to the HttpSession that the web socket handshake that started this
+     * conversation was part of, if applicable.
+     * @return 
+     */
+    public Object getSession();
      
 }

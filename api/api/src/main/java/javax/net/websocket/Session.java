@@ -79,11 +79,7 @@ public interface Session {
     public RemoteEndpoint getRemote();
     /** Return a reference to the RemoteEndpoint that can send messages in the form of objects of class c.*/
     public RemoteEndpoint getRemote(Class c);
-    /** Return a reference to the HttpSession that the web socket handshake that started this
-     * conversation was part of, if applicable.
-     * @return 
-     */
-    public HttpSession getSession();
+
     /** Close the current conversation with a normal status code and no reason phrase. */
     public void close() throws IOException;
     
