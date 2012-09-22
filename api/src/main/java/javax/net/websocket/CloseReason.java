@@ -32,7 +32,7 @@ package javax.net.websocket;
  */
 
 public class CloseReason {
-    private CloseCode closeCode;
+    private CloseReason.CloseCode closeCode;
     private String reasonPhrase;
     
     /** Creates a reason for closing a web socket connection with the given
@@ -40,7 +40,7 @@ public class CloseReason {
      * @param closeCode
      * @param reasonPhrase 
      */
-    public CloseReason(CloseCode closeCode, String reasonPhrase) {
+    public CloseReason(CloseReason.CloseCode closeCode, String reasonPhrase) {
         this.closeCode = closeCode;
         this.reasonPhrase = reasonPhrase;
     }
@@ -62,7 +62,7 @@ public class CloseReason {
      
     /** An Enumeration of status codes for a web socket close that
      * are defined in the specification. */
-    public enum CloseCodes implements CloseCode {
+    public enum CloseCodes implements CloseReason.CloseCode {
         /* 1000 */
         NORMAL_CLOSURE(1000),
         /* 1001 */

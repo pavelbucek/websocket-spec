@@ -47,7 +47,7 @@ public class SendResult {
     
     /** The problem sending the message. */
     public Throwable getException() {
-        return null;
+        return exception;
     }
     /** Determines if this result is ok or not. 
      @return whether the send was successful or not.
