@@ -40,7 +40,7 @@
 package javax.websocket.server;
 
 import java.net.URI;
-import java.util.List;
+import java.util.*;
 
 import javax.websocket.Endpoint;
 import javax.websocket.EndpointConfiguration;
@@ -57,12 +57,31 @@ import javax.websocket.HandshakeResponse;
  */
 public interface ServerEndpointConfiguration extends EndpointConfiguration {
 
+    
+    Map<String, Object> getUserProperties();
     /**
-     * Returns the Class of the Endpoint this configuration is configuring.
+     * CHANGED
+     * Returns the Class of the endpoint this configuration is configuring. If
+     * the endpoint is programmatic this is the subclass of Endpoint, if the
+     * endpoint is annotated, this is the class of the POJO.
      *
      * @return the class of the Endpoint.
      */
-    Class<? extends Endpoint> getEndpointClass();
+     Class getEndpointClass();
+     
+     /**
+     * Return the path for this endpoint configuration. The path
+     * is the URI or URI-template relative to the websocket root of the server to which the endpoint
+     * using this configuration will be mapped. The path always begins with a leading "/". A trailing "/" will be
+     * ignored.
+     *
+     * @return the relative path for this configuration.
+     */
+    String getPath();
+    
+    List<String> getSubprotocols();
+    List<Extension> getExtensions();
+    
 
     /**
      * Return the subprotocol this server endpoint has chosen from the requested
@@ -93,13 +112,19 @@ public interface ServerEndpointConfiguration extends EndpointConfiguration {
     boolean checkOrigin(String originHeaderValue);
 
     /**
-     * Answers whether the current configuration matches the given path. This method may be overridden
+     * Answers whether the current configuration matches the given path. If the current configuration
+     * path is a URI-template, the implementation should fill the given Map object
+     * with the names and corresponding values that the container should
+     * consider as the expansion of the URI-template. If the current
+     * configuration path is a uri, the Map variable is ignored. This method may be overridden
      * by implementations with any number of algorithms for determining a match.
      *
      * @param uri the uri of the incoming handshake.
+     * @param templateExpansion an empty Map of URI-template parameters that
+     * can be filled by the implementation of the method.
      * @return whether there was a match
      */
-    boolean matchesURI(URI uri);
+    boolean matchesURI(URI uri, Map<String, String> templateExpansion);
 
 
     /**
@@ -116,13 +141,5 @@ public interface ServerEndpointConfiguration extends EndpointConfiguration {
      */
     void modifyHandshake(HandshakeRequest request, HandshakeResponse response);
 
-    /**
-     * Return the path for this endpoint configuration. The path
-     * is the URI or URI-template relative to the websocket root of the server to which the endpoint
-     * using this configuration will be mapped. The path always begins with a leading "/". A trailing "/" will be
-     * ignored.
-     *
-     * @return the relative path for this configuration.
-     */
-    String getPath();
+
 }

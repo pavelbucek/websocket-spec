@@ -51,6 +51,8 @@ import java.util.Map;
  */
 public interface ClientEndpointConfiguration extends EndpointConfiguration {
 
+    
+    Map<String, Object> getUserProperties();
     /**
      * The ordered list of sub protocols a client endpoint would like to use, the empty list if there are none.
      * This list is used to generate the Sec-WebSocket-Protocol header in the opening
@@ -69,7 +71,7 @@ public interface ClientEndpointConfiguration extends EndpointConfiguration {
      *
      * @return a list of extensions.
      */
-    List<String> getExtensions();
+    List<Extension> getExtensions();
 
     /**
      * This method is called by the implementation after it has formulated the handshake

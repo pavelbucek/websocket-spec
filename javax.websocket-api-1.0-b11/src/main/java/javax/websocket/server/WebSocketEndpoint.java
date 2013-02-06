@@ -44,7 +44,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import javax.websocket.Decoder;
+import javax.websocket.*;
 import javax.websocket.Encoder;
 
 /**
@@ -121,5 +121,5 @@ public @interface WebSocketEndpoint {
      *
      * @return the custom configuration class.
      */
-    public Class<? extends DefaultServerConfiguration> configuration();
+    public Class<? extends ServerEndpointConfiguration> configuration() default DefaultServerConfiguration.class;
 }

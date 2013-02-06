@@ -40,6 +40,7 @@
 package javax.websocket.server;
 
 import java.util.Set;
+import javax.websocket.Endpoint;
 
 /**
  * Developers may include implementations of ServerApplicationConfiguration in an archive containing
@@ -50,18 +51,14 @@ import java.util.Set;
  * @author dannycoward
  */
 public interface ServerApplicationConfiguration {
+    
+    /** Dannyc: This I think might work. Scan only Endpoint subclasses, developer
+     is required to provide a set of endpointconfig instances to the container. */
+    public Set<ServerEndpointConfiguration> getEndpointConfigurations(Set<Class<? extends Endpoint>> endpointClasses);
 
     /**
-     * Return a set of ServerEndpointConfiguration classes that the server container
-     * must deploy. The set of ServerEndpointConfiguration passed in to this method is
-     * the set obtained by scanning the archive containing the implementation
-     * of this interface. Therefore, this set passed in contains all the ServerEndpointConfiguration classes
-     * in the JAR or WAR file containing the implementation of this interface. This set passed in
-     * may be used the build the set to return to the container for deployment.
-     *
-     * @param scanned the set of all the ServerEndpointConfiguration classes in the archive containing
-     *                the implementation of this interface.
-     * @return the set of ServerEndpointConfiguration to deploy on the server.
+     * Dannyc: This is the original method. I don't think it works to pass the container
+     * the EndpointConfiguration class.
      */
     Set<Class<? extends ServerEndpointConfiguration>> getEndpointConfigurationClasses(Set<Class<? extends ServerEndpointConfiguration>> scanned);
 

@@ -40,13 +40,13 @@
 package javax.websocket.server;
 
 import java.net.URI;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 import javax.websocket.Decoder;
 import javax.websocket.Encoder;
 import javax.websocket.Endpoint;
 import javax.websocket.Extension;
 import javax.websocket.HandshakeResponse;
+ 
 
 /**
  * The DefaultServerConfiguration is a concrete class that embodies all the configuration
@@ -56,80 +56,54 @@ import javax.websocket.HandshakeResponse;
  * @author dannycoward
  */
 public class DefaultServerConfiguration implements ServerEndpointConfiguration {
+    private ConfigurationAlgorithms implementationAlgorithms;
     private String path;
-    private Class<? extends Endpoint> endpointClass;
-    private List<String> subprotocols = new ArrayList<String>();
-    private List<Extension> extensions = new ArrayList<Extension>();
-    private List<Encoder> encoders = new ArrayList<Encoder>();
-    private List<Decoder> decoders = new ArrayList<Decoder>();
+    private Class endpointClass;
+    private List<String> subprotocols;
+    private List<Extension> extensions;
+    private List<Encoder> encoders;
+    private List<Decoder> decoders;
+    private Map<String, Object> userProperties = new HashMap<String, Object>();
 
-    private DefaultServerConfiguration() {
-
+    /**
+     * ADDED constructor, immutable
+     * @param path
+     * @param endpointClass
+     * @param subprotocols
+     * @param extensions
+     * @param encoders
+     * @param decoders 
+     */
+    // design choice: equivalent representation using builder.
+    public DefaultServerConfiguration(String path,
+                                    Class endpointClass,
+                                    List<String> subprotocols,
+                                    List<Extension> extensions,
+                                    List<Encoder> encoders,
+                                    List<Decoder> decoders) {
+        this.path = Objects.requireNonNull(path, "path may not be null");
+        this.endpointClass = Objects.requireNonNull(endpointClass, "endpoint class may not be null");
+        this.subprotocols = Objects.requireNonNull(Collections.unmodifiableList(subprotocols), "subprotocols may not be null");
+        this.extensions = Objects.requireNonNull(Collections.unmodifiableList(extensions), "extensions may not be null");
+        this.encoders = Objects.requireNonNull(Collections.unmodifiableList(encoders), "encoders may not be null");
+        this.decoders = Objects.requireNonNull(Collections.unmodifiableList(decoders), "decoders may not be null");
     }
 
     /**
-     * Returns the class of the Endpoint that this configuration configures.
+     * Editable map of user properties.
+     */
+    public final Map<String, Object> getUserProperties() {
+        return this.userProperties;
+    }
+    /**
+     * CHANGED final and Class not Class<? extends Endpoint>
+     * Returns the class of the programmatic or annotated endpoint that this configuration configures.
      *
      * @return the class of the Endpoint.
      */
     @Override
-    public Class<? extends Endpoint> getEndpointClass() {
+    public final Class getEndpointClass() {
         return this.endpointClass;
-    }
-
-
-    /**
-     * Creates a server configuration with the given path
-     *
-     * @param path the URI or URI template.
-     */
-    public DefaultServerConfiguration(Class<? extends Endpoint> endpointClass, String path) {
-        this.path = path;
-        this.endpointClass = endpointClass;
-    }
-
-    /**
-     * Sets all the encoders that this configuration will support.
-     *
-     * @param encoders the encoders supported
-     * @return this server configuration instance.
-     */
-    public DefaultServerConfiguration setEncoders(List<Encoder> encoders) {
-        this.encoders = encoders;
-        return this;
-    }
-
-    /**
-     * Sets all the decoders that this configuration will support.
-     *
-     * @param decoders the encoders supported
-     * @return this server configuration instance.
-     */
-    public DefaultServerConfiguration setDecoders(List<Decoder> decoders) {
-        this.decoders = decoders;
-        return this;
-    }
-
-    /**
-     * Sets all the subprotocols that this configuration will support.
-     *
-     * @param subprotocols the encoders supported
-     * @return this server configuration instance.
-     */
-    public DefaultServerConfiguration setSubprotocols(List<String> subprotocols) {
-        this.subprotocols = subprotocols;
-        return this;
-    }
-
-    /**
-     * Sets all the extensions that this configuration will support.
-     *
-     * @param extensions the encoders supported
-     * @return this server configuration instance.
-     */
-    public DefaultServerConfiguration setExtensions(List<Extension> extensions) {
-        this.extensions = extensions;
-        return this;
     }
 
     /**
@@ -139,7 +113,7 @@ public class DefaultServerConfiguration implements ServerEndpointConfiguration {
      * @return the encoders.
      */
     @Override
-    public List<Encoder> getEncoders() {
+    public final List<Encoder> getEncoders() {
         return this.encoders;
     }
 
@@ -152,7 +126,7 @@ public class DefaultServerConfiguration implements ServerEndpointConfiguration {
      * @return the encoders.
      */
     @Override
-    public List<Decoder> getDecoders() {
+    public final List<Decoder> getDecoders() {
         return this.decoders;
     }
 
@@ -163,8 +137,18 @@ public class DefaultServerConfiguration implements ServerEndpointConfiguration {
      * @return the path
      */
     @Override
-    public String getPath() {
+    public final String getPath() {
         return path;
+    }
+    
+    @Override
+    public final List<String> getSubprotocols() {
+        return this.subprotocols;
+    }
+    
+    @Override
+    public final List<Extension> getExtensions() {
+        return this.extensions;
     }
 
     /**
@@ -176,7 +160,7 @@ public class DefaultServerConfiguration implements ServerEndpointConfiguration {
      */
     @Override
     public String getNegotiatedSubprotocol(List<String> requestedSubprotocols) {
-        throw new RuntimeException("To implement");
+        return this.implementationAlgorithms.getNegotiatedSubprotocol(this.subprotocols, requestedSubprotocols);
     }
 
     /**
@@ -190,7 +174,7 @@ public class DefaultServerConfiguration implements ServerEndpointConfiguration {
      */
     @Override
     public List<Extension> getNegotiatedExtensions(List<Extension> requestedExtensions) {
-        throw new RuntimeException("To implement");
+        return this.implementationAlgorithms.getNegotiatedExtensions(requestedExtensions);
     }
 
     /**
@@ -202,7 +186,7 @@ public class DefaultServerConfiguration implements ServerEndpointConfiguration {
      */
     @Override
     public boolean checkOrigin(String originHeaderValue) {
-        throw new RuntimeException("To implement");
+        return this.implementationAlgorithms.checkOrigin(originHeaderValue);
     }
 
     /**
@@ -215,8 +199,8 @@ public class DefaultServerConfiguration implements ServerEndpointConfiguration {
      * @return whether it matched this configuration or not.
      */
     @Override
-    public boolean matchesURI(URI uri) {
-        return this.path.equals(uri.toString());
+    public boolean matchesURI(URI uri, Map<String, String> templateExpansion) {
+        return this.implementationAlgorithms.matchesURI(this.path, uri, templateExpansion);
     }
 
     /**

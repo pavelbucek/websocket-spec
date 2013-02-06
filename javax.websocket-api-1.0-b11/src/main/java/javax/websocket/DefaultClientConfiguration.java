@@ -40,8 +40,11 @@
 package javax.websocket;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * The DefaultClientConfiguration is a concrete implementation of a client configuration. Developers
@@ -50,15 +53,25 @@ import java.util.Map;
  * @author dannycoward
  */
 public class DefaultClientConfiguration implements ClientEndpointConfiguration {
-    private List<String> preferredSubprotocols = new ArrayList<String>();
-    private List<String> extensions = new ArrayList<String>();
-    private List<Encoder> encoders = new ArrayList<Encoder>();
-    private List<Decoder> decoders = new ArrayList<Decoder>();
+    private List<String> preferredSubprotocols;
+    private List<Extension> extensions;
+    private List<Encoder> encoders;
+    private List<Decoder> decoders;
+    private Map<String, Object> userProperties = new HashMap<String, Object>();
 
     /**
-     * Creates a client configuration with no preferred sub protocols, extensions, decoders or encoders.
+     * ADDED
+     * Creates a client configuration with preferred sub protocols, extensions, decoders and encoders.
      */
-    public DefaultClientConfiguration() {
+    public DefaultClientConfiguration(
+            List<String> preferredSubprotocols,
+            List<Extension> extensions,
+            List<Encoder> encoders,
+            List<Decoder> decoders) {
+        this.preferredSubprotocols = Objects.requireNonNull(Collections.unmodifiableList(preferredSubprotocols), "preferredSubprotocols cannot be null");
+        this.extensions = Objects.requireNonNull(Collections.unmodifiableList(extensions), "extensions cannot be null");
+        this.encoders = Objects.requireNonNull(Collections.unmodifiableList(encoders), "encoders cannot be null");
+        this.decoders = Objects.requireNonNull(Collections.unmodifiableList(decoders), "decoders cannot be null");
     }
 
     /**
@@ -67,21 +80,12 @@ public class DefaultClientConfiguration implements ClientEndpointConfiguration {
      *
      * @return the preferred subprotocols.
      */
+    @Override
     public List<String> getPreferredSubprotocols() {
         return this.preferredSubprotocols;
     }
 
-    /**
-     * Assign the List of preferred subprotocols that this client would like to
-     * use.
-     *
-     * @param preferredSubprotocols the preferred subprotocols.
-     * @return this endpoint configuration.
-     */
-    public DefaultClientConfiguration setPreferredSubprotocols(List<String> preferredSubprotocols) {
-        this.preferredSubprotocols = preferredSubprotocols;
-        return this;
-    }
+
 
     /**
      * Return the extensions, in order of preference, favorite first, that this client would
@@ -89,27 +93,18 @@ public class DefaultClientConfiguration implements ClientEndpointConfiguration {
      *
      * @return the extension list.
      */
-    public List<String> getExtensions() {
+    @Override
+    public List<Extension> getExtensions() {
         return this.extensions;
     }
 
-    /**
-     * Assign the List of preferred extensions that this client would like to
-     * use.
-     *
-     * @param extensions the extensions.
-     * @return this endpoint configuration.
-     */
-    public ClientEndpointConfiguration setExtensions(List<String> extensions) {
-        this.extensions = extensions;
-        return this;
-    }
 
     /**
      * Assign the list of encoders this client will use.
      *
      * @return the encoder list.
      */
+    @Override
     public List<Encoder> getEncoders() {
         return this.encoders;
     }
@@ -130,6 +125,7 @@ public class DefaultClientConfiguration implements ClientEndpointConfiguration {
      *
      * @return the decoders to use.
      */
+    @Override
     public List<Decoder> getDecoders() {
         return this.decoders;
     }
@@ -150,6 +146,7 @@ public class DefaultClientConfiguration implements ClientEndpointConfiguration {
      *
      * @param hr handshake request the implementation has formulated.
      */
+    @Override
     public void beforeRequest(Map<String, List<String>> hr) {
     }
 
@@ -159,6 +156,13 @@ public class DefaultClientConfiguration implements ClientEndpointConfiguration {
      * @param hr the handshake response sent by the server.
      */
     public void afterResponse(HandshakeResponse hr) {
+    }
+    
+    /**
+     * Editable map of user properties.
+     */
+    public final Map<String, Object> getUserProperties() {
+        return this.userProperties;
     }
 
 }
