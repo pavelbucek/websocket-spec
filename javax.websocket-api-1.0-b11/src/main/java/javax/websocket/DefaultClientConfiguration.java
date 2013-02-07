@@ -58,6 +58,7 @@ public class DefaultClientConfiguration implements ClientEndpointConfiguration {
     private List<Encoder> encoders;
     private List<Decoder> decoders;
     private Map<String, Object> userProperties = new HashMap<String, Object>();
+    private ClientHandshakeConfigurator clientHandshakeConfigurator;
 
     /**
      * ADDED
@@ -67,11 +68,16 @@ public class DefaultClientConfiguration implements ClientEndpointConfiguration {
             List<String> preferredSubprotocols,
             List<Extension> extensions,
             List<Encoder> encoders,
-            List<Decoder> decoders) {
+            List<Decoder> decoders,
+            ClientHandshakeConfigurator clientHandshakeConfigurator) {
         this.preferredSubprotocols = Objects.requireNonNull(Collections.unmodifiableList(preferredSubprotocols), "preferredSubprotocols cannot be null");
         this.extensions = Objects.requireNonNull(Collections.unmodifiableList(extensions), "extensions cannot be null");
         this.encoders = Objects.requireNonNull(Collections.unmodifiableList(encoders), "encoders cannot be null");
         this.decoders = Objects.requireNonNull(Collections.unmodifiableList(decoders), "decoders cannot be null");
+    }
+    
+    public ClientHandshakeConfigurator getClientHandshakeConfigurator() {
+        return this.clientHandshakeConfigurator;
     }
 
     /**
@@ -109,16 +115,7 @@ public class DefaultClientConfiguration implements ClientEndpointConfiguration {
         return this.encoders;
     }
 
-    /**
-     * Assign the list of encoders this client will use.
-     *
-     * @param encoders the encoders to use.
-     * @return this endpoint configuration.
-     */
-    public ClientEndpointConfiguration setEncoders(List<Encoder> encoders) {
-        this.encoders = encoders;
-        return this;
-    }
+
 
     /**
      * Assign the list of decoders this client will use.
@@ -128,34 +125,6 @@ public class DefaultClientConfiguration implements ClientEndpointConfiguration {
     @Override
     public List<Decoder> getDecoders() {
         return this.decoders;
-    }
-
-    /**
-     * Assign the list of decoders this client will use.
-     *
-     * @param decoders the extensions.
-     * @return this endpoint configuration.
-     */
-    public ClientEndpointConfiguration setDecoders(List<Decoder> decoders) {
-        this.decoders = decoders;
-        return this;
-    }
-
-    /**
-     * The default implementation of this method performs no actions on the HandshakeRequest headers.
-     *
-     * @param hr handshake request the implementation has formulated.
-     */
-    @Override
-    public void beforeRequest(Map<String, List<String>> hr) {
-    }
-
-    /**
-     * The default implementation of this method performs no actions on the HandshakeResponse.
-     *
-     * @param hr the handshake response sent by the server.
-     */
-    public void afterResponse(HandshakeResponse hr) {
     }
     
     /**

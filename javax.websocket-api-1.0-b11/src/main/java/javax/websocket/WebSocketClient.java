@@ -94,4 +94,6 @@ public @interface WebSocketClient {
      * @return the array of decoders.
      */
     Class<? extends Encoder>[] encoders() default {};
+    
+    Class<? extends ClientHandshakeConfigurator> configuration() default ClientHandshakeConfigurator.class;
 }
