@@ -26,21 +26,22 @@ public class MyApplicationConfiguration implements ServerApplicationConfiguratio
         Set<ServerEndpointConfiguration> logicalEndpoints = new HashSet<ServerEndpointConfiguration>();
         ServerEndpointConfiguration config;
         
-        config = new DefaultServerConfiguration("/pe-simple1",
+        config = new DefaultServerConfiguration("/pe-vanilla",
                                     ProgrammaticEndpoint.class,
                                     new ArrayList(),
                                     new ArrayList(),
                                     new ArrayList(),
-                                    new ArrayList()
-                                    new CustomAlgorithmImpl()); // yes we could provide a couple of convenience constructors.
+                                    new ArrayList(),
+                                    null); // yes we could provide a couple of convenience constructors.
         logicalEndpoints.add(config);
         
-        config = new SpecialServerHandshakeConfiguration("/pe-custom",
+        config = new DefaultServerConfiguration("/pe-custom",
                                     ProgrammaticEndpoint.class,
                                     new ArrayList(),
                                     new ArrayList(),
                                     new ArrayList(),
-                                    new ArrayList());
+                                    new ArrayList(),
+                                    new MyHandshakeConfigurator());
         logicalEndpoints.add(config);
         
         return logicalEndpoints;

@@ -39,13 +39,10 @@
  */
 package javax.websocket.server;
 
-import java.net.URI;
 import java.util.*;
 import javax.websocket.Decoder;
 import javax.websocket.Encoder;
-import javax.websocket.Endpoint;
 import javax.websocket.Extension;
-import javax.websocket.HandshakeResponse;
  
 
 /**
@@ -56,7 +53,8 @@ import javax.websocket.HandshakeResponse;
  * @author dannycoward
  */
 public final class DefaultServerConfiguration implements ServerEndpointConfiguration {
-    private ConfigurationAlgorithms implementationAlgorithms;
+    private static HandshakeConfigurator defaultHandshakeConfigurator;
+    private HandshakeConfigurator handshakeConfigurator;
     private String path;
     private Class endpointClass;
     private List<String> subprotocols;
@@ -80,18 +78,28 @@ public final class DefaultServerConfiguration implements ServerEndpointConfigura
                                     List<String> subprotocols,
                                     List<Extension> extensions,
                                     List<Encoder> encoders,
-                                    List<Decoder> decoders) {
+                                    List<Decoder> decoders,
+                                    HandshakeConfigurator handshakeConfigurator) {
         this.path = Objects.requireNonNull(path, "path may not be null");
         this.endpointClass = Objects.requireNonNull(endpointClass, "endpoint class may not be null");
         this.subprotocols = Objects.requireNonNull(Collections.unmodifiableList(subprotocols), "subprotocols may not be null");
         this.extensions = Objects.requireNonNull(Collections.unmodifiableList(extensions), "extensions may not be null");
         this.encoders = Objects.requireNonNull(Collections.unmodifiableList(encoders), "encoders may not be null");
         this.decoders = Objects.requireNonNull(Collections.unmodifiableList(decoders), "decoders may not be null");
+        if (handshakeConfigurator == null) {
+            this.handshakeConfigurator = getImplementationDefaultHandshakeConfigurator();
+        }
     }
     
-    public ConfigurationAlgorithms getConfigurationAlgorithms() {
-        return this.implementationAlgorithms;
-        
+    private static HandshakeConfigurator getImplementationDefaultHandshakeConfigurator() {
+        if (defaultHandshakeConfigurator == null) {
+                // load from SystemLoader.
+        }
+        return defaultHandshakeConfigurator;
+    }
+    
+    public HandshakeConfigurator getHandshakeConfigurator() {
+        return this.handshakeConfigurator;
     }
 
 
@@ -157,69 +165,5 @@ public final class DefaultServerConfiguration implements ServerEndpointConfigura
         return this.extensions;
     }
 
-    /**
-     * The default implementation of this method returns, the first subprotocol in the list sent by the client that
-     * the server supports, or null if there isn't one none. Subclasses may provide custom algorithms based on other factors.
-     *
-     * @param requestedSubprotocols the list of requested subprotocols.
-     * @return the negotiated subprotocol.
-     */
-    @Override
-    public String getNegotiatedSubprotocol(List<String> requestedSubprotocols) {
-        return this.implementationAlgorithms.getNegotiatedSubprotocol(this.subprotocols, requestedSubprotocols);
-    }
 
-    /**
-     * Provides a simple algorithm to return the list of extensions this server will
-     * use for the web socket session: the configuration returns a list containing all of the requested
-     * extensions passed to this method that it supports, using the order in the requested
-     * extensions, the empty list if none. Subclasses may provide custom algorithms based on other factors.
-     *
-     * @param requestedExtensions the list of extensions requested by the client
-     * @return the list of extensions that may be used.
-     */
-    @Override
-    public List<Extension> getNegotiatedExtensions(List<Extension> requestedExtensions) {
-        return this.implementationAlgorithms.getNegotiatedExtensions(requestedExtensions);
-    }
-
-    /**
-     * Makes a check of the validity of the Origin header sent along with the opening
-     * handshake following the recommendation at: <a href="http://tools.ietf.org/html/rfc6455#section-4.2">Sending the Server's Opening Handshake<a>.
-     *
-     * @param originHeaderValue The value of the Origin header.
-     * @return whether the check passed or not.
-     */
-    @Override
-    public boolean checkOrigin(String originHeaderValue) {
-        return this.implementationAlgorithms.checkOrigin(originHeaderValue);
-    }
-
-    /**
-     * This default implementation matches the incoming path to the configuration's URI or URI template if and only if
-     * it is an exact match in the case the configuration is a URI, and if and only if it is a valid
-     * expansion of the configuration URI template, in the case where the configuration is a URI template. Subclasses may override this method to provide
-     * different matching policies.
-     *
-     * @param uri the URL of the incoming request
-     * @return whether it matched this configuration or not.
-     */
-    @Override
-    public boolean matchesURI(URI uri, Map<String, String> templateExpansion) {
-        return this.implementationAlgorithms.matchesURI(this.path, uri, templateExpansion);
-    }
-
-    /**
-     * The default server configuration does not make any changes to the response. Subclasses may
-     * override this method in order to inspect the Http request headers of the openinghandshake, for example to track cookies
-     * sent by the client. Additionally subclasses may choose to override this method to modify the outgoing
-     * handshake response.
-     * the outgoing handshake response
-     *
-     * @param request  the handshake request from the client
-     * @param response the handshake response formulated by the container.
-     */
-    @Override
-    public void modifyHandshake(HandshakeRequest request, HandshakeResponse response) {
-    }
 }

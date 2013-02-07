@@ -116,10 +116,10 @@ public @interface WebSocketEndpoint {
 
 
     /**
-     * The custom configuration class that the developer would like to use
+     * The XXX class that the developer would like to use
      * to configure new instances of this endpoint.
      *
      * @return the custom configuration class.
      */
-    public Class<? extends ServerEndpointConfiguration> configuration() default DefaultServerConfiguration.class;
+    public Class<? extends HandshakeConfigurator> configuration() default HandshakeConfigurator.class;
 }

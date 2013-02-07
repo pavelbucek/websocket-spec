@@ -39,6 +39,7 @@
  */
 package javax.websocket;
 
+
 /**
  * Provider class that allows the developer to get a reference to
  * the implementation of the WebSocketContainer.
@@ -56,6 +57,7 @@ public class ContainerProvider {
     public static WebSocketContainer getClientContainer() {
         return (WebSocketContainer) loadImplementation(CLIENT_CLASSNAME_PROPERTYNAME);
     }
+
 
     private static Object loadImplementation(String name) {
         String clName = System.getProperty(name);

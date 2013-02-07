@@ -12,8 +12,8 @@ import javax.websocket.*;
 public class AnnotatedEndpoint_NormalConfig {
     @WebSocketOpen
     public void init(Session session, ServerEndpointConfiguration ec) {
-        // ec object is some container provided object that implements
-        // DefaultServerConfiguration and 
+        // ec object is some container implemented object that implements
+        // ServerEndpointConfiguration
         ec.getClass(); // this is AnnotatedEndpoint_NormalConfig.class
         ec.getPath(); // this is "/ae_normal"
     }
