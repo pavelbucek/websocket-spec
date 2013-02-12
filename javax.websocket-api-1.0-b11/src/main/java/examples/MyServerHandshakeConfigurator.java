@@ -4,7 +4,7 @@
  */
 package examples;
 
-import javax.websocket.server.HandshakeConfigurator;
+import javax.websocket.server.ServerHandshakeConfigurator;
 import java.net.URI;
 import java.util.List;
 import java.util.Map;
@@ -14,9 +14,9 @@ import javax.websocket.server.*;
 
     // obviously this would have more interesting behavior in real life !
 
-public class MyHandshakeConfigurator implements HandshakeConfigurator {
+public class MyServerHandshakeConfigurator implements ServerHandshakeConfigurator {
     
-    public MyHandshakeConfigurator() {
+    public MyServerHandshakeConfigurator() {
         
     }
     

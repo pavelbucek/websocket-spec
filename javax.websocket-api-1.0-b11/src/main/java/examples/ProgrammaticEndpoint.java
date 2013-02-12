@@ -4,7 +4,6 @@
  */
 package examples;
 
-import javax.websocket.server.*;
 import javax.websocket.*;
 /**
  *

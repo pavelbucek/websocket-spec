@@ -8,16 +8,12 @@ import java.net.URI;
 import java.util.List;
 import java.util.Map;
 import javax.websocket.Extension;
-import javax.websocket.Extension;
 import javax.websocket.HandshakeResponse;
-import javax.websocket.HandshakeResponse;
-import javax.websocket.server.HandshakeRequest;
-import javax.websocket.server.ServerEndpointConfiguration;
 
 /**
  * @author dannycoward
  */
-public interface HandshakeConfigurator {
+public interface ServerHandshakeConfigurator {
     public String getNegotiatedSubprotocol(List<String> supported, List<String> requested);
     // implementation of this method has to query container for installed extensions.
     public List<Extension> getNegotiatedExtensions(List<Extension> requested);

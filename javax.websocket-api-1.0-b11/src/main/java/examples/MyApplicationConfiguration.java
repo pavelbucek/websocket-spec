@@ -28,6 +28,7 @@ public class MyApplicationConfiguration implements ServerApplicationConfiguratio
         
         List subprotocols = new ArrayList();
         subprotocols.add("yoga");
+        
         config = DefaultServerConfigurationBuilder.createBuilder(ProgrammaticEndpoint.class, "/pe-vanilla")
                     .setSubprotocols(subprotocols)
                     .build();
@@ -35,7 +36,7 @@ public class MyApplicationConfiguration implements ServerApplicationConfiguratio
         
         config = DefaultServerConfigurationBuilder.createBuilder(ProgrammaticEndpoint.class, "/pe-custom")
                 .setSubprotocols(subprotocols)
-                .setHandshakeConfigurator(new MyHandshakeConfigurator())
+                .setHandshakeConfigurator(new MyServerHandshakeConfigurator())
                 .build();
         logicalEndpoints.add(config);
         

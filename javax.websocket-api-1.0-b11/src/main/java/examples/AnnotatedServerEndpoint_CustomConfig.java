@@ -12,15 +12,15 @@ import javax.websocket.server.WebSocketEndpoint;
     @WebSocketEndpoint(
             value="/ae_normal", // no-one can override this 
             subprotocols = "yoga", // no-one can override this
-            configuration=MyHandshakeConfigurator.class  // provides custom handshake-time behavior
+            configuration=MyServerHandshakeConfigurator.class  // provides custom handshake-time behavior
             )
-public class AnnotatedEndpoint_CustomConfig {
+public class AnnotatedServerEndpoint_CustomConfig {
     @WebSocketOpen
     public void init(Session session, ServerEndpointConfiguration ec) {
         // ec object is an instantiated SpecialServerHandshakeConfiguration
         // (by virtue of its mandated multi-arg constructor)
         ec.getEndpointClass(); // this is AnnotatedEndpoint_NormalConfig.class
         ec.getPath(); // this is "/ae_normal"
-        ((MyHandshakeConfigurator) ec.getHandshakeConfigurator()).calculateFoo(session.getId());
+        ((MyServerHandshakeConfigurator) ec.getServerHandshakeConfigurator()).calculateFoo(session.getId());
     }
 }

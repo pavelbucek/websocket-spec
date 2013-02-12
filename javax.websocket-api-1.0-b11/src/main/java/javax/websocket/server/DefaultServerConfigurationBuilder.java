@@ -14,8 +14,8 @@ import javax.websocket.Extension;
  * @author dannycoward
  */
 public class DefaultServerConfigurationBuilder {
-    private static HandshakeConfigurator defaultHandshakeConfigurator;
-    private HandshakeConfigurator handshakeConfigurator;
+    private static ServerHandshakeConfigurator defaultHandshakeConfigurator;
+    private ServerHandshakeConfigurator handshakeConfigurator;
     private String path;
     private Class endpointClass;
     private List<String> subprotocols;
@@ -106,11 +106,11 @@ public class DefaultServerConfigurationBuilder {
         return this.extensions;
     }
     
-    public HandshakeConfigurator getHandshakeConfigurator() {
+    public ServerHandshakeConfigurator getHandshakeConfigurator() {
         return this.getHandshakeConfigurator();
     } 
     
-    public DefaultServerConfigurationBuilder setHandshakeConfigurator(HandshakeConfigurator handshakeConfigurator) {
+    public DefaultServerConfigurationBuilder setHandshakeConfigurator(ServerHandshakeConfigurator handshakeConfigurator) {
         this.handshakeConfigurator = handshakeConfigurator;
         return this;
     }

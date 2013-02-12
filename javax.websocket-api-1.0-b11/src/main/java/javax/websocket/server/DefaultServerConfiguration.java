@@ -53,8 +53,8 @@ import javax.websocket.Extension;
  * @author dannycoward
  */
 public final class DefaultServerConfiguration implements ServerEndpointConfiguration {
-     private static HandshakeConfigurator defaultHandshakeConfigurator;
-    private HandshakeConfigurator handshakeConfigurator;
+     private static ServerHandshakeConfigurator defaultHandshakeConfigurator;
+    private ServerHandshakeConfigurator handshakeConfigurator;
     private String path;
     private Class endpointClass;
     private List<String> subprotocols;
@@ -79,7 +79,7 @@ public final class DefaultServerConfiguration implements ServerEndpointConfigura
                                     List<Extension> extensions,
                                     List<Encoder> encoders,
                                     List<Decoder> decoders,
-                                    HandshakeConfigurator handshakeConfigurator) {
+                                    ServerHandshakeConfigurator handshakeConfigurator) {
         this.path = Objects.requireNonNull(path, "path may not be null");
         this.endpointClass = Objects.requireNonNull(endpointClass, "endpoint class may not be null");
         this.subprotocols = Objects.requireNonNull(Collections.unmodifiableList(subprotocols), "subprotocols may not be null");
@@ -91,14 +91,14 @@ public final class DefaultServerConfiguration implements ServerEndpointConfigura
         }
     }
     
-    private static HandshakeConfigurator getImplementationDefaultHandshakeConfigurator() {
+    private static ServerHandshakeConfigurator getImplementationDefaultHandshakeConfigurator() {
         if (defaultHandshakeConfigurator == null) {
                 // load from SystemLoader.
         }
         return defaultHandshakeConfigurator;
     }
     
-    public HandshakeConfigurator getHandshakeConfigurator() {
+    public ServerHandshakeConfigurator getServerHandshakeConfigurator() {
         return this.handshakeConfigurator;
     }
 
