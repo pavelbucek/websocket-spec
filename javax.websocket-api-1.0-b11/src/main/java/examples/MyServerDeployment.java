@@ -20,6 +20,7 @@ public class MyServerDeployment implements ServerApplicationConfiguration {
         
         List subprotocols = new ArrayList();
         subprotocols.add("yoga");
+        
         // deploy the endpoint using a basic configuration
         config = ServerEndpointConfigurationBuilder.createBuilder(ProgrammaticEndpoint.class, "/pe-vanilla")
                     .setSubprotocols(subprotocols)
