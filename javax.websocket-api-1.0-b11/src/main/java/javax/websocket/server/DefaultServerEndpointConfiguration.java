@@ -52,9 +52,9 @@ import javax.websocket.Extension;
  *
  * @author dannycoward
  */
-public final class DefaultServerEndpointConfiguration implements ServerEndpointConfiguration {
-     private static ServerHandshakeConfigurator defaultHandshakeConfigurator;
-    private ServerHandshakeConfigurator handshakeConfigurator;
+ final class DefaultServerEndpointConfiguration implements ServerEndpointConfiguration {
+     private static ServerEndpointConfigurator defaultHandshakeConfigurator;
+    private ServerEndpointConfigurator handshakeConfigurator;
     private String path;
     private Class endpointClass;
     private List<String> subprotocols;
@@ -79,7 +79,7 @@ public final class DefaultServerEndpointConfiguration implements ServerEndpointC
                                     List<Extension> extensions,
                                     List<Encoder> encoders,
                                     List<Decoder> decoders,
-                                    ServerHandshakeConfigurator handshakeConfigurator) {
+                                    ServerEndpointConfigurator handshakeConfigurator) {
         this.path = Objects.requireNonNull(path, "path may not be null");
         this.endpointClass = Objects.requireNonNull(endpointClass, "endpoint class may not be null");
         this.subprotocols = Objects.requireNonNull(Collections.unmodifiableList(subprotocols), "subprotocols may not be null");
@@ -91,14 +91,14 @@ public final class DefaultServerEndpointConfiguration implements ServerEndpointC
         }
     }
     
-    private static ServerHandshakeConfigurator getImplementationDefaultHandshakeConfigurator() {
+    private static ServerEndpointConfigurator getImplementationDefaultHandshakeConfigurator() {
         if (defaultHandshakeConfigurator == null) {
                 // load from SystemLoader.
         }
         return defaultHandshakeConfigurator;
     }
     
-    public ServerHandshakeConfigurator getServerHandshakeConfigurator() {
+    public ServerEndpointConfigurator getServerHandshakeConfigurator() {
         return this.handshakeConfigurator;
     }
 

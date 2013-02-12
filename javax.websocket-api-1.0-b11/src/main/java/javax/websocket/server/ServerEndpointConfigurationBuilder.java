@@ -10,12 +10,13 @@ import javax.websocket.Encoder;
 import javax.websocket.Extension;
 
 /**
- *
+ * Builder class that creates ServerEndpointConfiguration objects that can
+ * be used to deploy server endpoints.
  * @author dannycoward
  */
 public class ServerEndpointConfigurationBuilder {
-    private static ServerHandshakeConfigurator defaultHandshakeConfigurator;
-    private ServerHandshakeConfigurator handshakeConfigurator;
+    private static ServerEndpointConfigurator defaultHandshakeConfigurator;
+    private ServerEndpointConfigurator handshakeConfigurator;
     private String path;
     private Class endpointClass;
     private List<String> subprotocols;
@@ -23,11 +24,20 @@ public class ServerEndpointConfigurationBuilder {
     private List<Encoder> encoders;
     private List<Decoder> decoders;
     
-    
+    /**
+     * Creates the builder with the mandatory information of the endpoint class (programmatic
+     * or annotated) and the relative URI or URI-template to use.
+     * @param endpointClass
+     * @param path
+     * @return 
+     */
     public static ServerEndpointConfigurationBuilder createBuilder(Class endpointClass, String path) {
         return new ServerEndpointConfigurationBuilder(endpointClass, path);
     }
-    
+    /**
+     * Builds the configuration object.
+     * @return 
+     */
     public DefaultServerEndpointConfiguration build() {
         return new DefaultServerEndpointConfiguration(
                 this.endpointClass,
@@ -45,7 +55,7 @@ public class ServerEndpointConfigurationBuilder {
         this.path = path;
     }
     /**
-     * Returns the class of the programmatic or annotated endpoint that this configuration configures.
+     * Returns the class of the programmatic or annotated endpoint.
      *
      * @return the class of the Endpoint.
      */
@@ -63,54 +73,93 @@ public class ServerEndpointConfigurationBuilder {
         return this.encoders;
     }
     
+    /** 
+     * Sets the list of encoders to use.
+     */
     public ServerEndpointConfigurationBuilder setEncoders(List<Encoder> encoders) {
         this.encoders = encoders;
         return this;
     }
 
-
+    /** 
+     * Return the decoders to use.
+     */ 
     public List<Decoder> getDecoders() {
         return this.decoders;
     }
     
+    /**
+     * Sets the decoders to use.
+     * 
+     * @param decoders
+     * @return 
+     */
     public ServerEndpointConfigurationBuilder setDecoders(List<Decoder> decoders) {
         this.decoders = decoders;
         return this;
     }
 
-
+    /** 
+     * Returns the path to use.
+     */
     public String getPath() {
         return path;
     }
-    
+    /** 
+     * Resets the path to use.
+     */
     public ServerEndpointConfigurationBuilder setPath(String path) {
         this.path = path;
         return this;
     }
     
+    /**
+     * Sets the subprotocols to use.
+     * 
+     * @param subprotocols
+     * @return 
+     */
     public ServerEndpointConfigurationBuilder setSubprotocols(List<String> subprotocols) {
         this.subprotocols = subprotocols;
         return this;
     }
-    
+    /**
+     * Returns the subprotocols to use.
+     * 
+     * @return 
+     */
     public List<String> getSubprotocols() {
         return this.subprotocols;
     }
     
+    /**
+     * Sets the extensions to use.
+     * 
+     * @param extensions
+     * @return 
+     */
     public ServerEndpointConfigurationBuilder setExtensions(List<Extension> extensions) {
         this.extensions = extensions;
         return this;
     }
-    
+    /**
+     * Gets the extensions to use.
+     * @return 
+     */
     public List<Extension> getExtensions() {
         return this.extensions;
     }
     
-    public ServerHandshakeConfigurator getHandshakeConfigurator() {
+    /** 
+     * Returns the custom configurator to use.
+     */
+    public ServerEndpointConfigurator getHandshakeConfigurator() {
         return this.getHandshakeConfigurator();
     } 
-    
-    public ServerEndpointConfigurationBuilder setHandshakeConfigurator(ServerHandshakeConfigurator handshakeConfigurator) {
+    /** 
+     * Sets the custom configurator to use.
+     */
+    public ServerEndpointConfigurationBuilder setHandshakeConfigurator(ServerEndpointConfigurator handshakeConfigurator) {
         this.handshakeConfigurator = handshakeConfigurator;
         return this;
     }

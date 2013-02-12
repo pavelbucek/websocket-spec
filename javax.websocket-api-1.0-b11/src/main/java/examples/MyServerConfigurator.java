@@ -4,7 +4,7 @@
  */
 package examples;
 
-import javax.websocket.server.ServerHandshakeConfigurator;
+import javax.websocket.server.ServerEndpointConfigurator;
 import java.net.URI;
 import java.util.List;
 import java.util.Map;
@@ -14,12 +14,13 @@ import javax.websocket.server.*;
 
     // obviously this would have more interesting behavior in real life !
 
-public class MyServerConfigurator implements ServerHandshakeConfigurator {
+public class MyServerConfigurator implements ServerEndpointConfigurator {
     
     public MyServerConfigurator() {
         
     }
     
+    @Override
    public String getNegotiatedSubprotocol(List<String> supported, List<String> requested) {
        return null;
    }
@@ -37,7 +38,7 @@ public class MyServerConfigurator implements ServerHandshakeConfigurator {
         
     }
     
-    public boolean calculateFoo(Object data) {
-        return true; // optimistic 
+    public int calculateFoo(Object data) {
+        return 42; // optimistic 
     }
 }

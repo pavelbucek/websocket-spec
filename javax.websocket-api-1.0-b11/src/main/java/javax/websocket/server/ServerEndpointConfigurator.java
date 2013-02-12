@@ -10,10 +10,13 @@ import java.util.Map;
 import javax.websocket.Extension;
 import javax.websocket.HandshakeResponse;
 
-/**
- * @author dannycoward
- */
-public interface ServerHandshakeConfigurator {
+    /** 
+     * The ServerEndpointConfigurator interface may be implemented by developers who want to
+    * provide custom configuration algorithms, such as intercepting the opening handshake, or
+    * providing arbitrary methods and algorithms that can be accessed from each endpoint
+    * instance configured with this configurator.
+    */
+public interface ServerEndpointConfigurator {
     public String getNegotiatedSubprotocol(List<String> supported, List<String> requested);
     // implementation of this method has to query container for installed extensions.
     public List<Extension> getNegotiatedExtensions(List<Extension> requested);

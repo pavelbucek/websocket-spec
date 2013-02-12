@@ -5,21 +5,13 @@
 package examples;
 
 import java.util.*;
-import javax.websocket.Decoder;
-import javax.websocket.Encoder;
 import javax.websocket.Endpoint;
-import javax.websocket.Extension;
 import javax.websocket.server.*;
 
 
-public class MyApplicationConfiguration implements ServerApplicationConfiguration {
-    
-    /** This is the old method for deploying programmatic endpoints that is replaced by the new one below.*/
-    @Override
-    public Set<Class<? extends ServerEndpointConfiguration>> getEndpointConfigurationClasses(Set<Class<? extends ServerEndpointConfiguration>> scanned) {
-        return null;
-    }
-    
+public class MyServerDeployment implements ServerApplicationConfiguration {
+
+    // I am going to deploy the endpoint in two configurations
     @Override
     public Set<ServerEndpointConfiguration> getEndpointConfigurations(Set<Class<? extends Endpoint>> endpointClasses) {
        // there is just one endpoint class that got scanned. But I am going to deploy it twice !!
@@ -28,12 +20,13 @@ public class MyApplicationConfiguration implements ServerApplicationConfiguratio
         
         List subprotocols = new ArrayList();
         subprotocols.add("yoga");
-        
+        // deploy the endpoint using a basic configuration
         config = ServerEndpointConfigurationBuilder.createBuilder(ProgrammaticEndpoint.class, "/pe-vanilla")
                     .setSubprotocols(subprotocols)
                     .build();
         logicalEndpoints.add(config);
         
+        // deploy the endpoint using a custom configuration
         config = ServerEndpointConfigurationBuilder.createBuilder(ProgrammaticEndpoint.class, "/pe-custom")
                 .setSubprotocols(subprotocols)
                 .setHandshakeConfigurator(new MyServerConfigurator())
@@ -45,9 +38,8 @@ public class MyApplicationConfiguration implements ServerApplicationConfiguratio
     }
 
 
-    /** I want all the annotated endpoints to be deployed. This method is implemented
-     in the same way as the container would implement it if there was no
-     ServerApplicationConfiguration class. */
+    /** I want all the annotated endpoints to be deployed. So I just
+     pass on the list of ones the container scanned in. */
     public Set<Class> getAnnotatedEndpointClasses(Set<Class> scanned) {
         // the scan reveals two annotated endpoint classes
         // so I will return them both

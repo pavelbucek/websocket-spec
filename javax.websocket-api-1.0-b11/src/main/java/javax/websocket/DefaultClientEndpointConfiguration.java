@@ -51,7 +51,7 @@ import java.util.Objects;
  *
  * @author dannycoward
  */
-public final class DefaultClientEndpointConfiguration implements ClientEndpointConfiguration {
+ final class DefaultClientEndpointConfiguration implements ClientEndpointConfiguration {
     private List<String> preferredSubprotocols;
     private List<Extension> extensions;
     private List<Encoder> encoders;
@@ -75,7 +75,7 @@ public final class DefaultClientEndpointConfiguration implements ClientEndpointC
         this.decoders = Objects.requireNonNull(Collections.unmodifiableList(decoders), "decoders cannot be null");
     }
     
-    public ClientEndpointConfigurator getClientHandshakeConfigurator() {
+    public ClientEndpointConfigurator getClientEndpointConfigurator() {
         return this.clientHandshakeConfigurator;
     }
 

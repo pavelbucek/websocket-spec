@@ -39,7 +39,7 @@ public class ClientEndpointConfigurationBuilder {
     }
     
     /**
-     * Return the handshake configurator this builder will use.
+     * Return the configurator this builder will use.
      * @return 
      */
     public ClientEndpointConfigurator getClientHandshakeConfigurator() {
@@ -47,7 +47,7 @@ public class ClientEndpointConfigurationBuilder {
     }
     
     /**
-     * Sets the handshake configurator for this
+     * Sets the handshake configurator for the configuration this builder will build.
      * @param clientHandshakeConfigurator
      * @return 
      */
@@ -65,7 +65,11 @@ public class ClientEndpointConfigurationBuilder {
     public List<String> getPreferredSubprotocols() {
         return this.preferredSubprotocols;
     }
-    
+    /**
+     * set the preferred sub protocols for the configuration this builder will build.
+     * @param preferredSubprotocols
+     * @return 
+     */
     public ClientEndpointConfigurationBuilder setPreferredSubprotocols(List<String> preferredSubprotocols) {
         this.preferredSubprotocols = preferredSubprotocols;
         return this;
@@ -82,7 +86,11 @@ public class ClientEndpointConfigurationBuilder {
     public List<Extension> getExtensions() {
         return this.extensions;
     }
-    
+    /**
+     * set the extensions for the configuration this builder will build.
+     * @param preferredSubprotocols
+     * @return 
+     */
     public ClientEndpointConfigurationBuilder setExtensions(List<Extension> extensions) {
         this.extensions = extensions;
         return this;
@@ -90,14 +98,18 @@ public class ClientEndpointConfigurationBuilder {
 
 
     /**
-     * Assign the list of encoders this client will use.
+     * Return the list of encoders this client will use.
      *
      * @return the encoder list.
      */
     public List<Encoder> getEncoders() {
         return this.encoders;
     }
-    
+    /**
+     * Assign the list of encoders this client will use.
+     *
+     * @return this.
+     */
     public ClientEndpointConfigurationBuilder setEncoders(List<Encoder> encoders) {
         this.encoders = encoders;
         return this;
@@ -106,14 +118,18 @@ public class ClientEndpointConfigurationBuilder {
 
 
     /**
-     * Assign the list of decoders this client will use.
+     * Return the list of decoders this client will use.
      *
      * @return the decoders to use.
      */
     public List<Decoder> getDecoders() {
         return this.decoders;
     }
-    
+        /**
+     * Assign the list of decoders this client will use.
+     *
+     * @return this.
+     */
     public ClientEndpointConfigurationBuilder setDecoders(List<Decoder> decoders) {
         this.decoders = decoders;
         return this;

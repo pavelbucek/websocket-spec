@@ -82,6 +82,6 @@ public interface ServerEndpointConfiguration extends EndpointConfiguration {
     List<Extension> getExtensions();
     
 
-    ServerHandshakeConfigurator getServerHandshakeConfigurator();
+    ServerEndpointConfigurator getServerHandshakeConfigurator();
 
 }

@@ -52,15 +52,11 @@ import javax.websocket.Endpoint;
  */
 public interface ServerApplicationConfiguration {
     
-    /** Dannyc: This I think might work. Scan only Endpoint subclasses, developer
-     is required to provide a set of endpointconfig instances to the container. */
-    public Set<ServerEndpointConfiguration> getEndpointConfigurations(Set<Class<? extends Endpoint>> endpointClasses);
-
-    /**
-     * Dannyc: This is the original method. I don't think it works to pass the container
-     * the EndpointConfiguration class.
+    /** 
+     * The programmatic endpoints to deploy. The Incoming scan is for all Endpoint subclasses in the WAR, developer
+     * is required to provide a set of ServerEndpointConfiguration instances to the container. 
      */
-    Set<Class<? extends ServerEndpointConfiguration>> getEndpointConfigurationClasses(Set<Class<? extends ServerEndpointConfiguration>> scanned);
+    public Set<ServerEndpointConfiguration> getEndpointConfigurations(Set<Class<? extends Endpoint>> endpointClasses);
 
     /**
      * Return a set of annotated endpoint classes that the server container

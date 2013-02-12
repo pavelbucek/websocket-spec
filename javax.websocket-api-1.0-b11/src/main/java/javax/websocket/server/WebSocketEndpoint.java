@@ -121,5 +121,5 @@ public @interface WebSocketEndpoint {
      *
      * @return the custom configuration class.
      */
-    public Class<? extends ServerHandshakeConfigurator> configuration() default ServerHandshakeConfigurator.class;
+    public Class<? extends ServerEndpointConfigurator> configuration() default ServerEndpointConfigurator.class;
 }

@@ -51,7 +51,10 @@ import java.util.Map;
  */
 public interface ClientEndpointConfiguration extends EndpointConfiguration {
 
-    
+    /**
+     * Convenience map of objects.
+     * @return 
+     */
     Map<String, Object> getUserProperties();
     /**
      * The ordered list of sub protocols a client endpoint would like to use, the empty list if there are none.
@@ -73,7 +76,11 @@ public interface ClientEndpointConfiguration extends EndpointConfiguration {
      */
     List<Extension> getExtensions();
 
-    public ClientEndpointConfigurator getClientHandshakeConfigurator();
+    /**
+     * Return the custom configurator for this configuration, or null.
+     * @return 
+     */
+    public ClientEndpointConfigurator getClientEndpointConfigurator();
 }
 
 

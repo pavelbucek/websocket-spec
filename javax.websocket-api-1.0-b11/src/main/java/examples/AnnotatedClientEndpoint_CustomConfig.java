@@ -14,6 +14,6 @@ public class AnnotatedClientEndpoint_CustomConfig {
      @WebSocketOpen
     public void init(Session session, ClientEndpointConfiguration ec) {
          // custom behavior
-       ((MyClientConfigurator) ec.getClientHandshakeConfigurator()).calculateFoo(this);
+       ((MyClientConfigurator) ec.getClientEndpointConfigurator()).calculateFoo(this);
     }
 }

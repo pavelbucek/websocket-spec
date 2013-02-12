@@ -8,7 +8,10 @@ import java.util.List;
 import java.util.Map;
 
 /**
- *
+ * The ClientEndpointConfigurator interface may be implemented by developers who want to
+ * provide custom configuration algorithms, such as intercepting the opening handshake, or
+ * providing arbitrary methods and algorithms that can be accessed from each endpoint
+ * instance configured with this configurator.
  * @author dannycoward
  */
 public interface ClientEndpointConfigurator {
