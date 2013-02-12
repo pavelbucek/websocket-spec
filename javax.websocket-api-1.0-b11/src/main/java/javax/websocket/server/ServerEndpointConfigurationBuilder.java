@@ -153,15 +153,19 @@ public class ServerEndpointConfigurationBuilder {
     /** 
      * Returns the custom configurator to use.
      */
-    public ServerEndpointConfigurator getHandshakeConfigurator() {
-        return this.getHandshakeConfigurator();
+    public ServerEndpointConfigurator getServerEndpointConfigurator() {
+        return this.handshakeConfigurator;
     } 
     /** 
      * Sets the custom configurator to use.
      */
-    public ServerEndpointConfigurationBuilder setHandshakeConfigurator(ServerEndpointConfigurator handshakeConfigurator) {
+    public ServerEndpointConfigurationBuilder setServerEndpointConfigurator(ServerEndpointConfigurator handshakeConfigurator) {
         this.handshakeConfigurator = handshakeConfigurator;
         return this;
+    }
+    
+    public static ServerEndpointConfigurator getContainerDefaultServerEndpointConfigurator() {
+        return null; // will need to figure out how to bootstrap this.
     }
 
 }

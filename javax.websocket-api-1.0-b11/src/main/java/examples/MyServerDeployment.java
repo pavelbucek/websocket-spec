@@ -29,7 +29,7 @@ public class MyServerDeployment implements ServerApplicationConfiguration {
         // deploy the endpoint using a custom configuration
         config = ServerEndpointConfigurationBuilder.createBuilder(ProgrammaticEndpoint.class, "/pe-custom")
                 .setSubprotocols(subprotocols)
-                .setHandshakeConfigurator(new MyServerConfigurator())
+                .setServerEndpointConfigurator(new MyServerConfigurator())
                 .build();
         logicalEndpoints.add(config);
         

@@ -4,7 +4,7 @@
  */
 package examples;
 
-import javax.websocket.server.ServerEndpointConfigurator;
+import javax.websocket.server.*;
 import java.net.URI;
 import java.util.List;
 import java.util.Map;
@@ -16,26 +16,30 @@ import javax.websocket.server.*;
 
 public class MyServerConfigurator implements ServerEndpointConfigurator {
     
-    public MyServerConfigurator() {
-        
+    public MyServerConfigurator() { 
     }
     
     @Override
    public String getNegotiatedSubprotocol(List<String> supported, List<String> requested) {
-       return null;
+        // just use the container default algorith
+       return ServerEndpointConfigurationBuilder.getContainerDefaultServerEndpointConfigurator().getNegotiatedSubprotocol(supported, requested);
    }
     // implementation of this method has to query container for installed extensions.
     public List<Extension> getNegotiatedExtensions(List<Extension> requested) {
-        return null;
+        // just use the container default algorith
+       return ServerEndpointConfigurationBuilder.getContainerDefaultServerEndpointConfigurator().getNegotiatedExtensions(requested);
     }
     public boolean checkOrigin(String originHeaderValue) {
-        return true;
+        // everything is fine !
+        return true; 
     }
     public boolean matchesURI(String uriOrTemplate, URI uri, Map<String, String> templateExpansion) {
-        return false;
+        // just use the container default algorith
+       return ServerEndpointConfigurationBuilder.getContainerDefaultServerEndpointConfigurator().matchesURI(uriOrTemplate, uri, templateExpansion);
     }
     public void modifyHandshake(ServerEndpointConfiguration sec, HandshakeRequest request, HandshakeResponse response) {
-        
+        // insert random headers
+        // etc.
     }
     
     public int calculateFoo(Object data) {

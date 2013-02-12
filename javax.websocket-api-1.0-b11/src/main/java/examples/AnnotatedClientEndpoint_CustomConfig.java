@@ -1,19 +1,16 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package examples;
 
 import javax.websocket.*;
 
 
 @WebSocketClient(
-        subprotocols="yoga",
+        subprotocols="yoga", // no-one can override this
         configuration=MyClientConfigurator.class)
 public class AnnotatedClientEndpoint_CustomConfig {
      @WebSocketOpen
     public void init(Session session, ClientEndpointConfiguration ec) {
-         // custom behavior
+         // custom handshake behavior, can obtain reference to the configurator here
        ((MyClientConfigurator) ec.getClientEndpointConfigurator()).calculateFoo(this);
     }
 }
