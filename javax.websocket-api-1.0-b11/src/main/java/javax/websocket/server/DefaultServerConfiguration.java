@@ -53,7 +53,7 @@ import javax.websocket.Extension;
  * @author dannycoward
  */
 public final class DefaultServerConfiguration implements ServerEndpointConfiguration {
-    private static HandshakeConfigurator defaultHandshakeConfigurator;
+     private static HandshakeConfigurator defaultHandshakeConfigurator;
     private HandshakeConfigurator handshakeConfigurator;
     private String path;
     private Class endpointClass;

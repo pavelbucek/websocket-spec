@@ -52,7 +52,7 @@ import java.util.Objects;
  * @author dannycoward
  */
 public final class DefaultClientConfiguration implements ClientEndpointConfiguration {
-    private List<String> preferredSubprotocols;
+     private List<String> preferredSubprotocols;
     private List<Extension> extensions;
     private List<Encoder> encoders;
     private List<Decoder> decoders;
