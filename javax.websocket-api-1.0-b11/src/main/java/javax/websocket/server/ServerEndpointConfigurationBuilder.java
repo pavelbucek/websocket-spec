@@ -13,7 +13,7 @@ import javax.websocket.Extension;
  *
  * @author dannycoward
  */
-public class DefaultServerConfigurationBuilder {
+public class ServerEndpointConfigurationBuilder {
     private static ServerHandshakeConfigurator defaultHandshakeConfigurator;
     private ServerHandshakeConfigurator handshakeConfigurator;
     private String path;
@@ -24,12 +24,12 @@ public class DefaultServerConfigurationBuilder {
     private List<Decoder> decoders;
     
     
-    public static DefaultServerConfigurationBuilder createBuilder(Class endpointClass, String path) {
-        return new DefaultServerConfigurationBuilder(endpointClass, path);
+    public static ServerEndpointConfigurationBuilder createBuilder(Class endpointClass, String path) {
+        return new ServerEndpointConfigurationBuilder(endpointClass, path);
     }
     
-    public DefaultServerConfiguration build() {
-        return new DefaultServerConfiguration(
+    public DefaultServerEndpointConfiguration build() {
+        return new DefaultServerEndpointConfiguration(
                 this.endpointClass,
                 this.path,
                 this.subprotocols,
@@ -40,7 +40,7 @@ public class DefaultServerConfigurationBuilder {
                 );
     }
     
-    private DefaultServerConfigurationBuilder(Class endpointClass, String path) {
+    private ServerEndpointConfigurationBuilder(Class endpointClass, String path) {
         this.endpointClass = endpointClass;
         this.path = path;
     }
@@ -63,7 +63,7 @@ public class DefaultServerConfigurationBuilder {
         return this.encoders;
     }
     
-    public DefaultServerConfigurationBuilder setEncoders(List<Encoder> encoders) {
+    public ServerEndpointConfigurationBuilder setEncoders(List<Encoder> encoders) {
         this.encoders = encoders;
         return this;
     }
@@ -73,7 +73,7 @@ public class DefaultServerConfigurationBuilder {
         return this.decoders;
     }
     
-    public DefaultServerConfigurationBuilder setDecoders(List<Decoder> decoders) {
+    public ServerEndpointConfigurationBuilder setDecoders(List<Decoder> decoders) {
         this.decoders = decoders;
         return this;
     }
@@ -83,12 +83,12 @@ public class DefaultServerConfigurationBuilder {
         return path;
     }
     
-    public DefaultServerConfigurationBuilder setPath(String path) {
+    public ServerEndpointConfigurationBuilder setPath(String path) {
         this.path = path;
         return this;
     }
     
-    public DefaultServerConfigurationBuilder setSubprotocols(List<String> subprotocols) {
+    public ServerEndpointConfigurationBuilder setSubprotocols(List<String> subprotocols) {
         this.subprotocols = subprotocols;
         return this;
     }
@@ -97,7 +97,7 @@ public class DefaultServerConfigurationBuilder {
         return this.subprotocols;
     }
     
-    public DefaultServerConfigurationBuilder setExtensions(List<Extension> extensions) {
+    public ServerEndpointConfigurationBuilder setExtensions(List<Extension> extensions) {
         this.extensions = extensions;
         return this;
     }
@@ -110,7 +110,7 @@ public class DefaultServerConfigurationBuilder {
         return this.getHandshakeConfigurator();
     } 
     
-    public DefaultServerConfigurationBuilder setHandshakeConfigurator(ServerHandshakeConfigurator handshakeConfigurator) {
+    public ServerEndpointConfigurationBuilder setHandshakeConfigurator(ServerHandshakeConfigurator handshakeConfigurator) {
         this.handshakeConfigurator = handshakeConfigurator;
         return this;
     }

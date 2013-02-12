@@ -12,6 +12,6 @@ import javax.websocket.*;
 public class ProgrammaticEndpoint extends Endpoint {
  
     public void onOpen(Session session, EndpointConfiguration config) {
-        
+        // do some things.
     }
 }

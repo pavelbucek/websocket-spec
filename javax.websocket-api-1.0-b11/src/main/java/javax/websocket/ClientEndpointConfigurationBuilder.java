@@ -8,23 +8,29 @@ import java.util.List;
 import java.util.Map;
 
 /**
- *
+ * Builder class for DefaultClientEndpointConfiguration instances.
  * @author dannycoward
  */
-public class DefaultClientConfigurationBuilder {
+public class ClientEndpointConfigurationBuilder {
     private List<String> preferredSubprotocols;
     private List<Extension> extensions;
     private List<Encoder> encoders;
     private List<Decoder> decoders;
-    private ClientHandshakeConfigurator clientHandshakeConfigurator;
+    private ClientEndpointConfigurator clientHandshakeConfigurator;
     
-    public static DefaultClientConfigurationBuilder createBuilder() {
-        return new DefaultClientConfigurationBuilder();
+    /**
+     * Creates a new builder object.
+     */
+    public static ClientEndpointConfigurationBuilder createBuilder() {
+        return new ClientEndpointConfigurationBuilder();
     }
     
-    
-    public DefaultClientConfiguration build() {
-        return new DefaultClientConfiguration(
+    /**
+     * build the configuration object once you are done setting the data.
+     * @return 
+     */
+    public DefaultClientEndpointConfiguration build() {
+        return new DefaultClientEndpointConfiguration(
             this.preferredSubprotocols,
             this.extensions,
             this.encoders,
@@ -32,8 +38,22 @@ public class DefaultClientConfigurationBuilder {
             this.clientHandshakeConfigurator);
     }
     
-    public ClientHandshakeConfigurator getClientHandshakeConfigurator() {
+    /**
+     * Return the handshake configurator this builder will use.
+     * @return 
+     */
+    public ClientEndpointConfigurator getClientHandshakeConfigurator() {
         return this.clientHandshakeConfigurator;
+    }
+    
+    /**
+     * Sets the handshake configurator for this
+     * @param clientHandshakeConfigurator
+     * @return 
+     */
+    public ClientEndpointConfigurationBuilder setClientHandshakeConfigurator(ClientEndpointConfigurator clientHandshakeConfigurator) {
+        this.clientHandshakeConfigurator = clientHandshakeConfigurator;
+        return this;
     }
 
     /**
@@ -46,7 +66,7 @@ public class DefaultClientConfigurationBuilder {
         return this.preferredSubprotocols;
     }
     
-    public DefaultClientConfigurationBuilder setPreferredSubprotocols(List<String> preferredSubprotocols) {
+    public ClientEndpointConfigurationBuilder setPreferredSubprotocols(List<String> preferredSubprotocols) {
         this.preferredSubprotocols = preferredSubprotocols;
         return this;
     }
@@ -63,7 +83,7 @@ public class DefaultClientConfigurationBuilder {
         return this.extensions;
     }
     
-    public DefaultClientConfigurationBuilder setExtensions(List<Extension> extensions) {
+    public ClientEndpointConfigurationBuilder setExtensions(List<Extension> extensions) {
         this.extensions = extensions;
         return this;
     }
@@ -78,7 +98,7 @@ public class DefaultClientConfigurationBuilder {
         return this.encoders;
     }
     
-    public DefaultClientConfigurationBuilder setEncoders(List<Encoder> encoders) {
+    public ClientEndpointConfigurationBuilder setEncoders(List<Encoder> encoders) {
         this.encoders = encoders;
         return this;
     }
@@ -94,7 +114,7 @@ public class DefaultClientConfigurationBuilder {
         return this.decoders;
     }
     
-    public DefaultClientConfigurationBuilder setDecoders(List<Decoder> decoders) {
+    public ClientEndpointConfigurationBuilder setDecoders(List<Decoder> decoders) {
         this.decoders = decoders;
         return this;
     }

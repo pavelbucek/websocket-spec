@@ -9,10 +9,11 @@ import javax.websocket.*;
 
 @WebSocketClient(
         subprotocols="yoga",
-        configuration=MyClientHandshakeConfigurator.class)
+        configuration=MyClientConfigurator.class)
 public class AnnotatedClientEndpoint_CustomConfig {
      @WebSocketOpen
     public void init(Session session, ClientEndpointConfiguration ec) {
-       
+         // custom behavior
+       ((MyClientConfigurator) ec.getClientHandshakeConfigurator()).calculateFoo(this);
     }
 }

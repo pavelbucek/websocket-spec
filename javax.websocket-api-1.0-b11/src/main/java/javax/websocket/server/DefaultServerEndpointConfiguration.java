@@ -46,13 +46,13 @@ import javax.websocket.Extension;
  
 
 /**
- * The DefaultServerConfiguration is a concrete class that embodies all the configuration
+ * The DefaultServerEndpointConfiguration is a concrete class that embodies all the configuration
  * parameters for an endpoint that is to be published as a server endpoint. Developers may
  * subclass this class in order to override the configuration behavior.
  *
  * @author dannycoward
  */
-public final class DefaultServerConfiguration implements ServerEndpointConfiguration {
+public final class DefaultServerEndpointConfiguration implements ServerEndpointConfiguration {
      private static ServerHandshakeConfigurator defaultHandshakeConfigurator;
     private ServerHandshakeConfigurator handshakeConfigurator;
     private String path;
@@ -73,7 +73,7 @@ public final class DefaultServerConfiguration implements ServerEndpointConfigura
      * @param decoders 
      */
     // design choice: equivalent representation using builder.
-    DefaultServerConfiguration(Class endpointClass,
+    DefaultServerEndpointConfiguration(Class endpointClass,
                                     String path,
                                     List<String> subprotocols,
                                     List<Extension> extensions,

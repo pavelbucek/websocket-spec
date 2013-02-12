@@ -14,9 +14,9 @@ import javax.websocket.server.*;
 
     // obviously this would have more interesting behavior in real life !
 
-public class MyServerHandshakeConfigurator implements ServerHandshakeConfigurator {
+public class MyServerConfigurator implements ServerHandshakeConfigurator {
     
-    public MyServerHandshakeConfigurator() {
+    public MyServerConfigurator() {
         
     }
     

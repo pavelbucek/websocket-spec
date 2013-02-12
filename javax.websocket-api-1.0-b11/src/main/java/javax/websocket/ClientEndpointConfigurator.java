@@ -11,7 +11,7 @@ import java.util.Map;
  *
  * @author dannycoward
  */
-public interface ClientHandshakeConfigurator {
+public interface ClientEndpointConfigurator {
         /**
      * This method is called by the implementation after it has formulated the handshake
      * request that will be used to initiate the connection to the server, but before it has

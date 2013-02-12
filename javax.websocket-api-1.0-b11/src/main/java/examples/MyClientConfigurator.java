@@ -12,7 +12,7 @@ import javax.websocket.*;
  *
  * @author dannycoward
  */
-public class MyClientHandshakeConfigurator implements ClientHandshakeConfigurator {
+public class MyClientConfigurator implements ClientEndpointConfigurator {
 
     @Override
     public void beforeRequest(Map<String, List<String>> headers) {
@@ -23,5 +23,9 @@ public class MyClientHandshakeConfigurator implements ClientHandshakeConfigurato
     @Override
     public void afterResponse(HandshakeResponse hr) {
         // fancy stuff
+    }
+    
+    public int calculateFoo(Object o) {
+        return 42;
     }
 }

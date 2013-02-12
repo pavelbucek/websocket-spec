@@ -95,5 +95,5 @@ public @interface WebSocketClient {
      */
     Class<? extends Encoder>[] encoders() default {};
     
-    Class<? extends ClientHandshakeConfigurator> configuration() default ClientHandshakeConfigurator.class;
+    Class<? extends ClientEndpointConfigurator> configuration() default ClientEndpointConfigurator.class;
 }

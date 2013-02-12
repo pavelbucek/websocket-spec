@@ -46,36 +46,36 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- * The DefaultClientConfiguration is a concrete implementation of a client configuration. Developers
- * may subclass this class in order to provide their own custom configuration behaviors.
+ * The DefaultClientEndpointConfiguration is a concrete implementation of a client configuration that is created
+ * using a builder. Developers may override configuration behavior by supplying a ClientEndpointConfigurator.
  *
  * @author dannycoward
  */
-public final class DefaultClientConfiguration implements ClientEndpointConfiguration {
-     private List<String> preferredSubprotocols;
+public final class DefaultClientEndpointConfiguration implements ClientEndpointConfiguration {
+    private List<String> preferredSubprotocols;
     private List<Extension> extensions;
     private List<Encoder> encoders;
     private List<Decoder> decoders;
     private Map<String, Object> userProperties = new HashMap<String, Object>();
-    private ClientHandshakeConfigurator clientHandshakeConfigurator;
+    private ClientEndpointConfigurator clientHandshakeConfigurator;
 
     /**
      * ADDED
      * Creates a client configuration with preferred sub protocols, extensions, decoders and encoders.
      */
-    DefaultClientConfiguration(
+    DefaultClientEndpointConfiguration(
             List<String> preferredSubprotocols,
             List<Extension> extensions,
             List<Encoder> encoders,
             List<Decoder> decoders,
-            ClientHandshakeConfigurator clientHandshakeConfigurator) {
+            ClientEndpointConfigurator clientHandshakeConfigurator) {
         this.preferredSubprotocols = Objects.requireNonNull(Collections.unmodifiableList(preferredSubprotocols), "preferredSubprotocols cannot be null");
         this.extensions = Objects.requireNonNull(Collections.unmodifiableList(extensions), "extensions cannot be null");
         this.encoders = Objects.requireNonNull(Collections.unmodifiableList(encoders), "encoders cannot be null");
         this.decoders = Objects.requireNonNull(Collections.unmodifiableList(decoders), "decoders cannot be null");
     }
     
-    public ClientHandshakeConfigurator getClientHandshakeConfigurator() {
+    public ClientEndpointConfigurator getClientHandshakeConfigurator() {
         return this.clientHandshakeConfigurator;
     }
 

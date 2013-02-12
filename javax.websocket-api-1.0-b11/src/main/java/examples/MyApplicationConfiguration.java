@@ -29,14 +29,14 @@ public class MyApplicationConfiguration implements ServerApplicationConfiguratio
         List subprotocols = new ArrayList();
         subprotocols.add("yoga");
         
-        config = DefaultServerConfigurationBuilder.createBuilder(ProgrammaticEndpoint.class, "/pe-vanilla")
+        config = ServerEndpointConfigurationBuilder.createBuilder(ProgrammaticEndpoint.class, "/pe-vanilla")
                     .setSubprotocols(subprotocols)
                     .build();
         logicalEndpoints.add(config);
         
-        config = DefaultServerConfigurationBuilder.createBuilder(ProgrammaticEndpoint.class, "/pe-custom")
+        config = ServerEndpointConfigurationBuilder.createBuilder(ProgrammaticEndpoint.class, "/pe-custom")
                 .setSubprotocols(subprotocols)
-                .setHandshakeConfigurator(new MyServerHandshakeConfigurator())
+                .setHandshakeConfigurator(new MyServerConfigurator())
                 .build();
         logicalEndpoints.add(config);
         

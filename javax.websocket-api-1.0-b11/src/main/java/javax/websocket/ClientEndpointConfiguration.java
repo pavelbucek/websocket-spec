@@ -73,7 +73,7 @@ public interface ClientEndpointConfiguration extends EndpointConfiguration {
      */
     List<Extension> getExtensions();
 
-    public ClientHandshakeConfigurator getClientHandshakeConfigurator();
+    public ClientEndpointConfigurator getClientHandshakeConfigurator();
 }
 
 
