@@ -29,7 +29,7 @@ public class ClientEndpointConfigurationBuilder {
      * build the configuration object once you are done setting the data.
      * @return 
      */
-    public DefaultClientEndpointConfiguration build() {
+    public ClientEndpointConfiguration build() {
         return new DefaultClientEndpointConfiguration(
             this.preferredSubprotocols,
             this.extensions,
