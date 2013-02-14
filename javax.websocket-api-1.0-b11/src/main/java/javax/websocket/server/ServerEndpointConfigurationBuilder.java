@@ -4,11 +4,11 @@
  */
 package javax.websocket.server;
 
+import java.util.Collections;
 import java.util.List;
 import javax.websocket.Decoder;
 import javax.websocket.Encoder;
 import javax.websocket.Extension;
-
 /**
  * Builder class that creates ServerEndpointConfiguration objects that can
  * be used to deploy server endpoints.
@@ -19,10 +19,10 @@ public class ServerEndpointConfigurationBuilder {
     private ServerEndpointConfigurator handshakeConfigurator;
     private String path;
     private Class endpointClass;
-    private List<String> subprotocols;
-    private List<Extension> extensions;
-    private List<Encoder> encoders;
-    private List<Decoder> decoders;
+    private List<String> subprotocols = Collections.emptyList();
+    private List<Extension> extensions = Collections.emptyList();
+    private List<Encoder> encoders = Collections.emptyList();
+    private List<Decoder> decoders = Collections.emptyList();
     
     /**
      * Creates the builder with the mandatory information of the endpoint class (programmatic
@@ -38,7 +38,7 @@ public class ServerEndpointConfigurationBuilder {
      * Builds the configuration object.
      * @return 
      */
-    public DefaultServerEndpointConfiguration build() {
+    public ServerEndpointConfiguration build() {
         return new DefaultServerEndpointConfiguration(
                 this.endpointClass,
                 this.path,
@@ -51,8 +51,11 @@ public class ServerEndpointConfigurationBuilder {
     }
     
     private ServerEndpointConfigurationBuilder(Class endpointClass, String path) {
+        if (endpointClass == null) {
+            throw new IllegalArgumentException("endpointClass cannot be null");
+        }
         this.endpointClass = endpointClass;
-        this.path = path;
+        this.setPath(path);
     }
     /**
      * Returns the class of the programmatic or annotated endpoint.
@@ -109,6 +112,9 @@ public class ServerEndpointConfigurationBuilder {
      * Resets the path to use.
      */
     public ServerEndpointConfigurationBuilder setPath(String path) {
+        if (path == null) {
+            throw new IllegalStateException("Path cannot be null");
+        }
         this.path = path;
         return this;
     }
@@ -164,8 +170,6 @@ public class ServerEndpointConfigurationBuilder {
         return this;
     }
     
-    public static ServerEndpointConfigurator getContainerDefaultServerEndpointConfigurator() {
-        return null; // will need to figure out how to bootstrap this.
-    }
+
 
 }

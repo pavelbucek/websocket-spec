@@ -4,6 +4,7 @@
  */
 package javax.websocket;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -12,10 +13,10 @@ import java.util.Map;
  * @author dannycoward
  */
 public class ClientEndpointConfigurationBuilder {
-    private List<String> preferredSubprotocols;
-    private List<Extension> extensions;
-    private List<Encoder> encoders;
-    private List<Decoder> decoders;
+    private List<String> preferredSubprotocols = Collections.emptyList();
+    private List<Extension> extensions = Collections.emptyList();
+    private List<Encoder> encoders = Collections.emptyList();
+    private List<Decoder> decoders = Collections.emptyList();
     private ClientEndpointConfigurator clientHandshakeConfigurator;
     
     /**
@@ -29,7 +30,7 @@ public class ClientEndpointConfigurationBuilder {
      * build the configuration object once you are done setting the data.
      * @return 
      */
-    public ClientEndpointConfiguration build() {
+    public DefaultClientEndpointConfiguration build() {
         return new DefaultClientEndpointConfiguration(
             this.preferredSubprotocols,
             this.extensions,
@@ -39,7 +40,7 @@ public class ClientEndpointConfigurationBuilder {
     }
     
     /**
-     * Return the configurator this builder will use.
+     * Return the configurator this builder will use, may be null
      * @return 
      */
     public ClientEndpointConfigurator getClientHandshakeConfigurator() {

@@ -12,7 +12,7 @@ import javax.websocket.*;
  *
  * @author dannycoward
  */
-public class MyClientConfigurator implements ClientEndpointConfigurator {
+public class MyClientConfigurator extends ClientEndpointConfigurator {
 
     @Override
     public void beforeRequest(Map<String, List<String>> headers) {

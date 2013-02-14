@@ -53,7 +53,7 @@ import javax.websocket.Extension;
  * @author dannycoward
  */
  final class DefaultServerEndpointConfiguration implements ServerEndpointConfiguration {
-     private static ServerEndpointConfigurator defaultHandshakeConfigurator;
+    private static ServerEndpointConfigurator defaultHandshakeConfigurator;
     private ServerEndpointConfigurator handshakeConfigurator;
     private String path;
     private Class endpointClass;
@@ -80,23 +80,18 @@ import javax.websocket.Extension;
                                     List<Encoder> encoders,
                                     List<Decoder> decoders,
                                     ServerEndpointConfigurator handshakeConfigurator) {
-        this.path = Objects.requireNonNull(path, "path may not be null");
-        this.endpointClass = Objects.requireNonNull(endpointClass, "endpoint class may not be null");
-        this.subprotocols = Objects.requireNonNull(Collections.unmodifiableList(subprotocols), "subprotocols may not be null");
-        this.extensions = Objects.requireNonNull(Collections.unmodifiableList(extensions), "extensions may not be null");
-        this.encoders = Objects.requireNonNull(Collections.unmodifiableList(encoders), "encoders may not be null");
-        this.decoders = Objects.requireNonNull(Collections.unmodifiableList(decoders), "decoders may not be null");
+        this.path = path;
+        this.endpointClass = endpointClass;
+        this.subprotocols = Collections.unmodifiableList(subprotocols);
+        this.extensions = Collections.unmodifiableList(extensions);
+        this.encoders = Collections.unmodifiableList(encoders);
+        this.decoders = Collections.unmodifiableList(decoders);
         if (handshakeConfigurator == null) {
-            this.handshakeConfigurator = getImplementationDefaultHandshakeConfigurator();
+            this.handshakeConfigurator = ServerEndpointConfigurator.fetchContainerDefaultConfigurator();
         }
     }
     
-    private static ServerEndpointConfigurator getImplementationDefaultHandshakeConfigurator() {
-        if (defaultHandshakeConfigurator == null) {
-                // load from SystemLoader.
-        }
-        return defaultHandshakeConfigurator;
-    }
+
     
     public ServerEndpointConfigurator getServerHandshakeConfigurator() {
         return this.handshakeConfigurator;

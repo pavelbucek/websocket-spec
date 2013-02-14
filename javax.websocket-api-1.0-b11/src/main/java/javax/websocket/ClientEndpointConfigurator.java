@@ -14,7 +14,7 @@ import java.util.Map;
  * instance configured with this configurator.
  * @author dannycoward
  */
-public interface ClientEndpointConfigurator {
+public abstract class ClientEndpointConfigurator {
         /**
      * This method is called by the implementation after it has formulated the handshake
      * request that will be used to initiate the connection to the server, but before it has
@@ -24,7 +24,9 @@ public interface ClientEndpointConfigurator {
      * @param headers the mutable map of handshake request headers the implementation is about to send to
      *                start the handshake interaction.
      */
-    void beforeRequest(Map<String, List<String>> headers);
+    public void beforeRequest(Map<String, List<String>> headers) {
+        
+    }
 
     /**
      * This method is called by the implementation after it has received a handshake response
@@ -33,5 +35,7 @@ public interface ClientEndpointConfigurator {
      *
      * @param hr the handshake response sent by the server.
      */
-    void afterResponse(HandshakeResponse hr);
+    public void afterResponse(HandshakeResponse hr) {
+        
+    }
 }
