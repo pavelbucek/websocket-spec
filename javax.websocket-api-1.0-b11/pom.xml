@@ -55,7 +55,7 @@
       for non-final builds
     -->
     <version>1.0-b11</version>
-    <name>Config Tue WebSocket API jar</name>
+    <name>New Config: WebSocket API jar</name>
     <description>JSR 356:Java API for WebSocket</description>
     <url>http://websocket-spec.java.net</url>
 
