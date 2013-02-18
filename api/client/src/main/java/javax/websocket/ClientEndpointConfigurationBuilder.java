@@ -34,7 +34,9 @@ public class ClientEndpointConfigurationBuilder {
     private List<Extension> extensions = new ArrayList<Extension>();
     private List<Encoder> encoders = new ArrayList<Encoder>();
     private List<Decoder> decoders = new ArrayList<Decoder>();
-    private ClientEndpointConfigurator clientEndpointConfigurator;
+    private ClientEndpointConfigurator clientEndpointConfigurator = new ClientEndpointConfigurator() {
+
+    };
     
     /**
      * Creates a new builder object with no subprotocols, extensions, encoders,

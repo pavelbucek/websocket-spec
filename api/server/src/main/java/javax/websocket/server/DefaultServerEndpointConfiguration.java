@@ -83,6 +83,8 @@ import javax.websocket.Extension;
         this.decoders = Collections.unmodifiableList(decoders);
         if (handshakeConfigurator == null) {
             this.handshakeConfigurator = ServerEndpointConfigurator.fetchContainerDefaultConfigurator();
+        }else{  //CHANGE : added else
+            this.handshakeConfigurator = handshakeConfigurator;
         }
     }
 
