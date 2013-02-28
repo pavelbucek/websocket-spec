@@ -177,9 +177,9 @@ public abstract class ServerEndpointConfigurator {
      * @return 
      */
     
-    public <T> T getEndpointInstance(Class<T> c) throws InstantiationException {
+    public <T> T getEndpointInstance(Class<T> endpontClass) throws InstantiationException {
         // stepan, this implementation should do exactly what your instantiation code does today.
-        return this.getContainerDefaultConfigurator().getEndpointInstance(c);
+        return this.getContainerDefaultConfigurator().getEndpointInstance(endpontClass);
         
     }
 
