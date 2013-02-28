@@ -165,5 +165,21 @@ public abstract class ServerEndpointConfigurator {
     public void modifyHandshake(ServerEndpointConfiguration sec, HandshakeRequest request, HandshakeResponse response) {
         // nothing.
     }
+    
+    /**
+     * Hi Stepan !
+     * Called by the container when it needs to obtain the endpoint instance when
+     * a new client connects to the logical endpoint.
+     * The platform default implementation does what it does now (i.e. instantiation
+     * is done by the CDI bean manager). If an endpoint has a configurator
+     * which overrides this method, the container must call it rather than
+     * use the platform default implementation.
+     * @return 
+     */
+    
+    public Object getEndpointInstance() throws InstantiationException {
+        return this.getContainerDefaultConfigurator().getEndpointInstance();
+        
+    }
 
 }
