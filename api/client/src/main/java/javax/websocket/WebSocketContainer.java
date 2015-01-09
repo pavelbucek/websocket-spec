@@ -1,7 +1,7 @@
 /*
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
  *
- * Copyright (c) 2012-2013 Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2012-2015 Oracle and/or its affiliates. All rights reserved.
  *
  * The contents of this file are subject to the terms of either the GNU
  * General Public License Version 2 only ("GPL") or the Common Development
@@ -39,9 +39,14 @@
  */
 package javax.websocket;
 
-import java.io.*;
+import java.io.IOException;
 import java.net.URI;
 import java.util.Set;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.ForkJoinPool;
+import java.util.concurrent.ForkJoinTask;
+import java.util.function.BiConsumer;
 
 /**
  * A WebSocketContainer is an implementation provided object that provides applications
@@ -163,7 +168,150 @@ public interface WebSocketContainer {
      */
     Session connectToServer(Class<? extends Endpoint> endpointClass, ClientEndpointConfig cec, URI path) throws DeploymentException, IOException;
 
+    public default SessionBuilder sessionBuilder() {
+        return new SessionBuilder(this);
+    }
 
+    public static class SessionBuilder {
+
+        private final WebSocketContainer container;
+
+        URI path;
+        ClientEndpointConfig clientEndpointConfig;
+
+        MessageHandler.Whole<?> wholeMessageHandler;
+        Class<?> wholeMessageHandlerType;
+
+        BiConsumer<Session, EndpointConfig> onOpen;
+        BiConsumer<Session, Throwable> onError;
+        BiConsumer<Session, CloseReason> onClose;
+
+        /**
+         * Package private constructor.
+         */
+        SessionBuilder(WebSocketContainer container) {
+            this.container = container;
+        }
+
+        public SessionBuilder clientEndpointConfig(ClientEndpointConfig clientEndpointConfig) {
+            this.clientEndpointConfig = clientEndpointConfig;
+            return this;
+        }
+
+        public SessionBuilder path(URI path) {
+            this.path = path;
+            return this;
+        }
+
+        // TODO: MessageHandler#Partial
+        public <T> SessionBuilder messageHandler(Class<T> clazz, MessageHandler.Whole<T> messageHandler) {
+            this.wholeMessageHandler = messageHandler;
+            this.wholeMessageHandlerType = clazz;
+            return this;
+        }
+
+        public SessionBuilder onOpen(BiConsumer<Session, EndpointConfig> onOpen) {
+            this.onOpen = onOpen;
+            return this;
+        }
+
+        public SessionBuilder onError(BiConsumer<Session, Throwable> onError) {
+            this.onError = onError;
+            return this;
+        }
+
+        public SessionBuilder onClose(BiConsumer<Session, CloseReason> onClose) {
+            this.onClose = onClose;
+            return this;
+        }
+
+        public Session connect() throws IOException, DeploymentException {
+            // TODO: validation
+
+            final URI path = this.path;
+            final ClientEndpointConfig clientEndpointConfig = this.clientEndpointConfig;
+
+            final BiConsumer<Session, EndpointConfig> onOpen = this.onOpen;
+            final BiConsumer<Session, Throwable> onError = this.onError;
+            final BiConsumer<Session, CloseReason> onClose = this.onClose;
+
+            final MessageHandler.Whole wholeMessageHandler = this.wholeMessageHandler;
+            final Class wholeMessageHandlerType = this.wholeMessageHandlerType;
+
+
+            final Endpoint endpoint = new Endpoint() {
+                @Override
+                public void onOpen(Session session, EndpointConfig config) {
+                    // TODO: validation/condition
+                    session.addMessageHandler(wholeMessageHandlerType, wholeMessageHandler);
+
+                    onOpen.accept(session, config);
+                }
+
+                @Override
+                public void onClose(Session session, CloseReason closeReason) {
+                    onClose.accept(session, closeReason);
+                }
+
+                @Override
+                public void onError(Session session, Throwable thr) {
+                    onError.accept(session, thr);
+                }
+            };
+
+            return container.connectToServer(endpoint, clientEndpointConfig, path);
+        }
+
+        public CompletableFuture<Session> connectAsync() {
+
+            final CompletableFuture<Session> completableFuture = new CompletableFuture<>();
+
+            final ForkJoinTask<Void> forkJoinTask = new ForkJoinTask<Void>() {
+
+                @Override
+                public final Void getRawResult() { return null; }
+
+                @Override
+                public final void setRawResult(Void v) { }
+
+                @Override
+                protected boolean exec() {
+                    try {
+                        completableFuture.complete(connect());
+                        return true;
+                    } catch (Exception e) {
+                        completableFuture.completeExceptionally(e);
+                    }
+                    return false;
+                }
+            };
+
+            // TODO: Can we use ForkJoinPool#commonPool?
+            ForkJoinPool.commonPool().execute(forkJoinTask);
+
+            return completableFuture;
+        }
+
+        public CompletableFuture<Session> connectAsync(ExecutorService executorService) {
+
+            final CompletableFuture<Session> completableFuture = new CompletableFuture<>();
+
+            Runnable runnable = new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        completableFuture.complete(connect());
+                    } catch (Exception e) {
+                        completableFuture.completeExceptionally(e);
+                    }
+                }
+            };
+
+            executorService.execute(runnable);
+
+            return completableFuture;
+        }
+    }
 
     /**
      * Return the default time in milliseconds after which any web socket sessions in this
