@@ -46,7 +46,7 @@ import java.util.Map;
 
 /**
  * The ClientEndpointConfig is a special kind of endpoint configuration object that contains
- * web socket configuration information specific only to client endpoints. Developers deploying 
+ * web socket configuration information specific only to client endpoints. Developers deploying
  * programmatic client endpoints can create instances of this configuration by
  * using a {@link ClientEndpointConfig.Builder}. Developers can override some
  * of the configuration operations by providing an implementation of
@@ -55,7 +55,6 @@ import java.util.Map;
  * @author dannycoward
  */
 public interface ClientEndpointConfig extends EndpointConfig {
-
 
     /**
      * Return the ordered list of sub protocols a client endpoint would like to use,
@@ -67,7 +66,9 @@ public interface ClientEndpointConfig extends EndpointConfig {
      *
      * @return the list of the preferred subprotocols, the empty list if there are none
      */
-    List<String> getPreferredSubprotocols();
+    public default List<String> getPreferredSubprotocols() {
+        return Collections.emptyList();
+    }
 
     /**
      * Return the extensions, in order of preference, favorite first, that this client would
@@ -78,23 +79,25 @@ public interface ClientEndpointConfig extends EndpointConfig {
      *
      * @return the list of extensions, the empty list if there are none.
      */
-    List<Extension> getExtensions();
-    
-    
+    public default List<Extension> getExtensions() {
+        return Collections.emptyList();
+    }
+
     /**
      * Return the custom configurator for this configuration. If the developer
      * did not provide one, the platform default configurator is returned.
-     * 
+     *
      * @return the configurator in use with this configuration.
      */
-    public ClientEndpointConfig.Configurator getConfigurator();
+    public default ClientEndpointConfig.Configurator getConfigurator() {
+        return new Configurator();
+    }
 
     /**
      * The Configurator class may be extended by developers who want to
      * provide custom configuration algorithms, such as intercepting the opening handshake, or
      * providing arbitrary methods and algorithms that can be accessed from each endpoint
      * instance configured with this configurator.
-
      */
     public class Configurator {
 
@@ -124,130 +127,125 @@ public interface ClientEndpointConfig extends EndpointConfig {
     }
 
     /**
-    * The ClientEndpointConfig.Builder is a class used for creating
-    * {@link ClientEndpointConfig} objects for the purposes of
-    * deploying a client endpoint.
-    * Here are some examples:
-    * Building a plain configuration with no encoders, decoders, subprotocols or extensions.
-    * <code>
-    * ClientEndpointConfig cec = ClientEndpointConfig.Builder.create().build();
-    * </code>
-    * 
-    * Building a configuration with no subprotocols and a custom configurator.
-    * <pre><code>
-    * ClientEndpointConfig customCec = ClientEndpointConfig.Builder.create()
-    *         .preferredSubprotocols(mySubprotocols)
-    *         .configurator(new MyClientConfigurator())
-    *         .build();
-    * </code></pre>
-    * 
-    * 
-    * @author dannycoward
-    */
-   public final class Builder {
-       private List<String> preferredSubprotocols = Collections.emptyList();
-       private List<Extension> extensions = Collections.emptyList();
-       private List<Class<? extends Encoder>> encoders = Collections.emptyList();
-       private List<Class<? extends Decoder>> decoders = Collections.emptyList();
-       private ClientEndpointConfig.Configurator clientEndpointConfigurator = new ClientEndpointConfig.Configurator() {
+     * The ClientEndpointConfig.Builder is a class used for creating
+     * {@link ClientEndpointConfig} objects for the purposes of
+     * deploying a client endpoint.
+     * Here are some examples:
+     * Building a plain configuration with no encoders, decoders, subprotocols or extensions.
+     * <code>
+     * ClientEndpointConfig cec = ClientEndpointConfig.Builder.create().build();
+     * </code>
+     * <p>
+     * Building a configuration with no subprotocols and a custom configurator.
+     * <pre><code>
+     * ClientEndpointConfig customCec = ClientEndpointConfig.Builder.create()
+     *         .preferredSubprotocols(mySubprotocols)
+     *         .configurator(new MyClientConfigurator())
+     *         .build();
+     * </code></pre>
+     *
+     * @author dannycoward
+     */
+    public final class Builder {
+        private List<String> preferredSubprotocols = Collections.emptyList();
+        private List<Extension> extensions = Collections.emptyList();
+        private List<Class<? extends Encoder>> encoders = Collections.emptyList();
+        private List<Class<? extends Decoder>> decoders = Collections.emptyList();
+        private ClientEndpointConfig.Configurator clientEndpointConfigurator = new ClientEndpointConfig.Configurator() {
 
-       };
-       
-       // use create()
-       private Builder() {   
-       }
+        };
 
-       /**
-        * Creates a new builder object with no subprotocols, extensions, encoders,
-        * decoders and a {@code null} configurator.
-        * 
-        * @return a new builder object.
-        */
-       public static ClientEndpointConfig.Builder create() {
-           return new ClientEndpointConfig.Builder();
-       }
+        // use create()
+        private Builder() {
+        }
 
-       /**
-        * Builds a configuration object using the attributes set
-        * on this builder.
-        * 
-        * @return a new configuration object.
-        */
-       public ClientEndpointConfig build() {
-           return new DefaultClientEndpointConfig(
-               Collections.unmodifiableList(this.preferredSubprotocols),
-               Collections.unmodifiableList(this.extensions),
-               Collections.unmodifiableList(this.encoders),
-               Collections.unmodifiableList(this.decoders),
-               this.clientEndpointConfigurator);
-       }
+        /**
+         * Creates a new builder object with no subprotocols, extensions, encoders,
+         * decoders and a {@code null} configurator.
+         *
+         * @return a new builder object.
+         */
+        public static ClientEndpointConfig.Builder create() {
+            return new ClientEndpointConfig.Builder();
+        }
 
+        /**
+         * Builds a configuration object using the attributes set
+         * on this builder.
+         *
+         * @return a new configuration object.
+         */
+        public ClientEndpointConfig build() {
+            return new DefaultClientEndpointConfig(
+                    Collections.unmodifiableList(this.preferredSubprotocols),
+                    Collections.unmodifiableList(this.extensions),
+                    Collections.unmodifiableList(this.encoders),
+                    Collections.unmodifiableList(this.decoders),
+                    this.clientEndpointConfigurator);
+        }
 
 
-       /**
-        * Sets the configurator object for the configuration this builder will build.
-        * 
-        * @param clientEndpointConfigurator the configurator
-        * @return the builder instance
-        */
-       public ClientEndpointConfig.Builder configurator(ClientEndpointConfig.Configurator clientEndpointConfigurator) {
-           this.clientEndpointConfigurator = clientEndpointConfigurator;
-           return this;
-       }
+        /**
+         * Sets the configurator object for the configuration this builder will build.
+         *
+         * @param clientEndpointConfigurator the configurator
+         * @return the builder instance
+         */
+        public ClientEndpointConfig.Builder configurator(ClientEndpointConfig.Configurator clientEndpointConfigurator) {
+            this.clientEndpointConfigurator = clientEndpointConfigurator;
+            return this;
+        }
 
 
-       /**
-        * Set the preferred sub protocols for the configuration this builder will build. The
-        * list is treated in order of preference, favorite first, that this client would
-        * like to use for its sessions.
-        * 
-        * @param preferredSubprotocols the preferred subprotocol names.
-        * @return the builder instance
-        */
-       public ClientEndpointConfig.Builder preferredSubprotocols(List<String> preferredSubprotocols) {
-           this.preferredSubprotocols = (preferredSubprotocols == null) ? new ArrayList<String>() : preferredSubprotocols;
-           return this;
-       }
+        /**
+         * Set the preferred sub protocols for the configuration this builder will build. The
+         * list is treated in order of preference, favorite first, that this client would
+         * like to use for its sessions.
+         *
+         * @param preferredSubprotocols the preferred subprotocol names.
+         * @return the builder instance
+         */
+        public ClientEndpointConfig.Builder preferredSubprotocols(List<String> preferredSubprotocols) {
+            this.preferredSubprotocols = (preferredSubprotocols == null) ? new ArrayList<String>() : preferredSubprotocols;
+            return this;
+        }
 
 
-       /**
-        * Set the extensions for the configuration this builder will build. The 
-        * list is treated in order of preference, favorite first, that the 
-        * client would like to use for its sessions.
-        * 
-        * @param extensions the extensions
-        * @return the builder instance
-        */
-       public ClientEndpointConfig.Builder extensions(List<Extension> extensions) {
-           this.extensions = (extensions == null) ? new ArrayList<Extension>() : extensions;
-           return this;
-       }
+        /**
+         * Set the extensions for the configuration this builder will build. The
+         * list is treated in order of preference, favorite first, that the
+         * client would like to use for its sessions.
+         *
+         * @param extensions the extensions
+         * @return the builder instance
+         */
+        public ClientEndpointConfig.Builder extensions(List<Extension> extensions) {
+            this.extensions = (extensions == null) ? new ArrayList<Extension>() : extensions;
+            return this;
+        }
 
-       /**
-        * Assign the list of encoder implementation classes the client will use.
-        *
-        * @param encoders the encoder implementation classes
-        * @return the builder instance
-        */
-       public ClientEndpointConfig.Builder encoders(List<Class<? extends Encoder>> encoders) {
-           this.encoders = (encoders == null) ? new ArrayList<Class<? extends Encoder>>() : encoders;
-           return this;
-       }
+        /**
+         * Assign the list of encoder implementation classes the client will use.
+         *
+         * @param encoders the encoder implementation classes
+         * @return the builder instance
+         */
+        public ClientEndpointConfig.Builder encoders(List<Class<? extends Encoder>> encoders) {
+            this.encoders = (encoders == null) ? new ArrayList<Class<? extends Encoder>>() : encoders;
+            return this;
+        }
 
-       /**
-        * Assign the list of decoder implementation classes the client will use.
-        *
-        * @param decoders the decoder implementation classes
-        * @return this builder instance
-        */
-       public ClientEndpointConfig.Builder decoders(List<Class<? extends Decoder>> decoders) {
-           this.decoders = (decoders == null) ? new ArrayList<Class<? extends Decoder>>() : decoders;
-           return this;
-       }
-
-
-   }
-
+        /**
+         * Assign the list of decoder implementation classes the client will use.
+         *
+         * @param decoders the decoder implementation classes
+         * @return this builder instance
+         */
+        public ClientEndpointConfig.Builder decoders(List<Class<? extends Decoder>> decoders) {
+            this.decoders = (decoders == null) ? new ArrayList<Class<? extends Decoder>>() : decoders;
+            return this;
+        }
+    }
 }
 
 

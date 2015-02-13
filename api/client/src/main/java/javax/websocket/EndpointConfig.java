@@ -39,6 +39,7 @@
  */
 package javax.websocket;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -59,7 +60,9 @@ public interface EndpointConfig {
      *
      * @return the encoder implementation classes, an empty list if none.
      */
-    List<Class<? extends Encoder>> getEncoders();
+    public default List<Class<? extends Encoder>> getEncoders() {
+        return Collections.emptyList();
+    }
 
     /**
      * Return the Decoder implementation classes configured. These
@@ -69,17 +72,21 @@ public interface EndpointConfig {
      *
      * @return the decoder implementation classes, the empty list if none.
      */
-    List<Class<? extends Decoder>> getDecoders();
-    
+    public default List<Class<? extends Decoder>> getDecoders() {
+        return Collections.emptyList();
+    }
+
     /**
      * This method returns a modifiable Map that the developer may use to store application
      * specific information relating to the endpoint that uses this
-     * configuration instance. Web socket applications running on distributed 
-     * implementations of the web container should make any application 
-     * specific objects stored here java.io.Serializable, or the object may 
+     * configuration instance. Web socket applications running on distributed
+     * implementations of the web container should make any application
+     * specific objects stored here java.io.Serializable, or the object may
      * not be recreated after a failover.
      *
      * @return a modifiable Map of application data.
-     */ 
-     Map<String, Object> getUserProperties();
+     */
+    public default Map<String, Object> getUserProperties() {
+        return Collections.emptyMap();
+    }
 }

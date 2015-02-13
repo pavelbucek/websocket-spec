@@ -39,6 +39,7 @@
  */
 package javax.websocket.server;
 
+import java.util.Collections;
 import java.util.Set;
 import javax.websocket.Endpoint;
 
@@ -65,7 +66,9 @@ public interface ServerApplicationConfig {
      * @return the non-null set of ServerEndpointConfig s to deploy on the server, using the empty set to
      * indicate none.
      */
-    public Set<ServerEndpointConfig> getEndpointConfigs(Set<Class<? extends Endpoint>> endpointClasses);
+    public default Set<ServerEndpointConfig> getEndpointConfigs(Set<Class<? extends Endpoint>> endpointClasses) {
+        return Collections.emptySet();
+    }
 
     /**
      * Return a set of annotated endpoint classes that the server container
@@ -80,5 +83,7 @@ public interface ServerApplicationConfig {
      * @return the non-null set of annotated endpoint classes to deploy on the server, using the empty
      * set to indicate none.
      */
-    Set<Class<?>> getAnnotatedEndpointClasses(Set<Class<?>> scanned);
+    public default Set<Class<?>> getAnnotatedEndpointClasses(Set<Class<?>> scanned) {
+        return Collections.emptySet();
+    }
 }
