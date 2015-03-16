@@ -43,6 +43,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.Writer;
 import java.nio.ByteBuffer;
+import java.util.concurrent.CompletionStage;
 import java.util.concurrent.Future;
 
 /**
@@ -195,7 +196,7 @@ public interface RemoteEndpoint {
          * @return the Future object representing the send operation.
          * @throws IllegalArgumentException if the text is {@code null}.
          */
-        Future<Void> sendText(String text);
+        <T extends Future<Void> & CompletionStage<Void>> T sendText(String text);
 
         /**
          * Initiates the asynchronous transmission of a binary message. This method returns before the message
@@ -208,7 +209,7 @@ public interface RemoteEndpoint {
          * @return the Future object representing the send operation.
          * @throws IllegalArgumentException if the data is {@code null}.
          */
-        Future<Void> sendBinary(ByteBuffer data);
+        <T extends Future<Void> & CompletionStage<Void>> T sendBinary(ByteBuffer data);
 
         /**
          * Initiates the asynchronous transmission of a binary message. This method returns before the message
@@ -235,9 +236,8 @@ public interface RemoteEndpoint {
          * @param data the object being sent.
          * @return the Future object representing the send operation.
          * @throws IllegalArgumentException if the data is {@code null}.
-
          */
-        Future<Void> sendObject(Object data);
+        <T extends Future<Void> & CompletionStage<Void>> T sendObject(Object data);
 
         /**
          * Initiates the asynchronous transmission of a custom developer object. 
